@@ -237,7 +237,9 @@ public class AppFragment extends BlankFragment implements OnClickListener {
 
 	@Override
 	public void onInstallAppDone(App app) {
-		if (app == null || this.app == null) return;
+		if (app == null || this.app == null) {
+			return;
+		}
 		if (app.getPackageName().equalsIgnoreCase(this.app.getPackageName())) {
 			makeView(getView());
 			final NotificationManager notificationManager = (NotificationManager) getActivity()

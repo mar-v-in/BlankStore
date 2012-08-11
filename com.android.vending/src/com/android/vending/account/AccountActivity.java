@@ -8,7 +8,6 @@ import android.telephony.TelephonyManager;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import com.android.vending.R;
 
@@ -16,7 +15,7 @@ public class AccountActivity extends Activity implements OnClickListener {
 	@Override
 	public void onClick(View v) {
 		final AccountManager accountManager = AccountManager.getInstance(this);
-		HashMap<String, String> accountData = new HashMap<String, String>();
+		final HashMap<String, String> accountData = new HashMap<String, String>();
 		accountData.put(Account.ACCOUNT_DATA_KEY_ANDROIDID,
 				((EditText) findViewById(R.id.txt_androidId)).getText()
 						.toString());
@@ -39,7 +38,7 @@ public class AccountActivity extends Activity implements OnClickListener {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.account);
-		TelephonyManager telephonyManager = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
+		final TelephonyManager telephonyManager = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
 		((EditText) findViewById(R.id.txt_opAlpha)).setText(telephonyManager
 				.getNetworkOperatorName());
 		((EditText) findViewById(R.id.txt_opNum)).setText(telephonyManager
