@@ -41,9 +41,9 @@ public class AccountActivity extends Activity implements OnClickListener {
 		setContentView(R.layout.account);
 		TelephonyManager telephonyManager = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
 		((EditText) findViewById(R.id.txt_opAlpha)).setText(telephonyManager
-				.getSimOperatorName());
+				.getNetworkOperatorName());
 		((EditText) findViewById(R.id.txt_opNum)).setText(telephonyManager
-				.getSimOperator());
+				.getNetworkOperator());
 		findViewById(R.id.btn_create_account).setOnClickListener(this);
 	}
 }
