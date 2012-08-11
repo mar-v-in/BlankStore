@@ -122,7 +122,9 @@ public abstract class GooglePlayConnection extends BlankConnection {
 	void openConnectionSynced() {
 		makeDirectoryReady(getCacheDir());
 		session = new MarketSession(isSecure());
-		session.setOperator(operatorAlpha, operatorNumeric);
+		if (operatorAlpha != null && operatorNumeric != null) {
+			session.setOperator(operatorAlpha, operatorNumeric);
+		}
 		session.login(email, password, androidId);
 	}
 }

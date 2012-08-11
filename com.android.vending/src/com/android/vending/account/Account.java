@@ -61,11 +61,6 @@ public class Account {
 		this.accountData = accountData;
 	}
 
-	public Account(String login, String password, Type type, String androidId) {
-		this(login, password, type);
-		accountData.put(ACCOUNT_DATA_KEY_ANDROIDID, androidId);
-	}
-
 	public String getAndroidId() {
 		return accountData.get(ACCOUNT_DATA_KEY_ANDROIDID);
 	}
