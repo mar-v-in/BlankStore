@@ -10,12 +10,12 @@ import com.android.vending.BlankListener;
 import com.gc.android.market.api.model.Market.App;
 import com.gc.android.market.api.model.Market.GetImageRequest.AppImageUsage;
 
-public class QueryImageToViewTask
+public class ImageToViewTask
 		extends
-		QueryImageTask<QueryImageToViewTask.DataSet, QueryImageTask<QueryImageToViewTask.DataSet, ?>.Result> {
+		ImageTask<ImageToViewTask.DataSet, ImageTask<ImageToViewTask.DataSet, ?>.Result> {
 	public class DataSet
 			extends
-			QueryImageTask<DataSet, QueryImageTask<QueryImageToViewTask.DataSet, ?>.Result>.DataSet {
+			ImageTask<DataSet, ImageTask<ImageToViewTask.DataSet, ?>.Result>.DataSet {
 		private final ImageView imageView;
 
 		public DataSet(List<BlankListener> listeners,
@@ -35,7 +35,7 @@ public class QueryImageToViewTask
 	Integer resultBitmapSync = 1;
 
 	@Override
-	protected QueryImageTask<QueryImageToViewTask.DataSet, ?>.Result doInBackground(
+	protected ImageTask<ImageToViewTask.DataSet, ?>.Result doInBackground(
 			DataSet... params) {
 		if (params.length >= 1) {
 			final DataSet dataSet = params[0];
@@ -56,7 +56,7 @@ public class QueryImageToViewTask
 
 	@Override
 	protected void onPostExecute(
-			QueryImageTask<QueryImageToViewTask.DataSet, ?>.Result result) {
+			ImageTask<ImageToViewTask.DataSet, ?>.Result result) {
 		resultBitmap = result.getBitmap();
 		if (resultBitmap != null) {
 			result.getDataSet().getImageView().setImageBitmap(resultBitmap);

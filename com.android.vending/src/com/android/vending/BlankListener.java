@@ -8,6 +8,8 @@ import com.gc.android.market.api.model.Market.App;
 
 public interface BlankListener {
 	void onDownloadAppDone(App app, File file);
+	
+	void onDownloadAppFailed(App app);
 
 	void onDownloadAppProgess(App app, int progress, int max);
 

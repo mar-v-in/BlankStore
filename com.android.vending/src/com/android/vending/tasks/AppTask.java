@@ -7,22 +7,22 @@ import com.android.vending.BlankConnection;
 import com.android.vending.BlankListener;
 import com.gc.android.market.api.model.Market.App;
 
-public class QueryAppsTask extends
-		BlankAsyncTask<QueryAppsTask.DataSet, QueryAppsTask.Result> {
+public class AppTask extends
+		BlankAsyncTask<AppTask.DataSet, AppTask.Result> {
 	public class DataSet extends BlankAsyncTask<DataSet, Result>.DataSet {
-		private final List<String> packageNames;
+		private final String packageName;
 		private final boolean extendedInfo;
 
 		public DataSet(List<BlankListener> listeners,
-				BlankConnection connection, List<String> packageNames,
+				BlankConnection connection, String packageName,
 				boolean extendedInfo) {
 			super(listeners, connection);
-			this.packageNames = packageNames;
+			this.packageName = packageName;
 			this.extendedInfo = extendedInfo;
 		}
 
-		public List<String> getPackageNames() {
-			return packageNames;
+		public String getPackageName() {
+			return packageName;
 		}
 
 		public boolean isExtendedInfoRequired() {
@@ -31,15 +31,15 @@ public class QueryAppsTask extends
 	}
 
 	public class Result extends BlankAsyncTask<DataSet, Result>.Result {
-		private final List<App> apps;
+		private final App app;
 
-		public Result(DataSet dataSet, List<App> apps) {
+		public Result(DataSet dataSet, App app) {
 			super(dataSet);
-			this.apps = apps;
+			this.app = app;
 		}
 
-		public List<App> getApps() {
-			return apps;
+		public App getApp() {
+			return app;
 		}
 	}
 
@@ -47,24 +47,22 @@ public class QueryAppsTask extends
 	protected Result doInBackground(DataSet... params) {
 		if (params.length >= 1) {
 			final DataSet dataSet = params[0];
-			final List<App> apps = dataSet.getConnection()
-					.queryAppsByName(dataSet.getPackageNames(),
-							dataSet.isExtendedInfoRequired());
-			return new Result(dataSet, apps);
+			final App app = dataSet.getConnection().queryAppByName(
+					dataSet.getPackageName(), dataSet.isExtendedInfoRequired());
+			return new Result(dataSet, app);
 		}
 		return new Result(null, null);
 	}
 
 	public DataSet getDataSet(List<BlankListener> listeners,
-			BlankConnection connection, List<String> packageNames,
-			boolean extendedInfo) {
-		return new DataSet(listeners, connection, packageNames, extendedInfo);
+			BlankConnection connection, String packageName, boolean extendedInfo) {
+		return new DataSet(listeners, connection, packageName, extendedInfo);
 	}
 
 	@Override
 	protected void onPostExecute(Result result) {
 		for (final BlankListener listener : result.getDataSet().getListeners()) {
-			listener.onQueryAppsResult(result.getApps());
+			listener.onQueryAppResult(result.getApp());
 		}
 	}
 

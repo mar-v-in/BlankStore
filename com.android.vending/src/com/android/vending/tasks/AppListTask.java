@@ -7,8 +7,8 @@ import com.android.vending.BlankConnection;
 import com.android.vending.BlankListener;
 import com.gc.android.market.api.model.Market.App;
 
-public class QueryAppListTask extends
-		BlankAsyncTask<QueryAppListTask.DataSet, QueryAppListTask.Result> {
+public class AppListTask extends
+		BlankAsyncTask<AppListTask.DataSet, AppListTask.Result> {
 	public class DataSet extends BlankAsyncTask<DataSet, Result>.DataSet {
 		private final String query;
 		private final int start;

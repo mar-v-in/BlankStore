@@ -68,6 +68,7 @@ public class MarketSession {
 	public static final String ACCOUNT_TYPE_HOSTED = "HOSTED";
 	public static final String ACCOUNT_TYPE_HOSTED_OR_GOOGLE = "HOSTED_OR_GOOGLE";
 	public static final int PROTOCOL_VERSION = 2;
+	private static final int MAX_REQUEST_NUM = 20;
 	Request.Builder request = Request.newBuilder();
 	RequestContext.Builder context = RequestContext.newBuilder();
 
@@ -96,6 +97,9 @@ public class MarketSession {
 		request.addRequestGroup(RequestGroup.newBuilder().setAppsRequest(
 				requestGroup));
 		callbacks.add(responseCallback);
+		if (request.getRequestGroupCount() == MAX_REQUEST_NUM) {
+			flush();
+		}
 	}
 
 	public void append(CategoriesRequest requestGroup,
@@ -103,6 +107,9 @@ public class MarketSession {
 		request.addRequestGroup(RequestGroup.newBuilder().setCategoriesRequest(
 				requestGroup));
 		callbacks.add(responseCallback);
+		if (request.getRequestGroupCount() == MAX_REQUEST_NUM) {
+			flush();
+		}
 	}
 
 	public void append(CommentsRequest requestGroup,
@@ -110,6 +117,9 @@ public class MarketSession {
 		request.addRequestGroup(RequestGroup.newBuilder().setCommentsRequest(
 				requestGroup));
 		callbacks.add(responseCallback);
+		if (request.getRequestGroupCount() == MAX_REQUEST_NUM) {
+			flush();
+		}
 	}
 
 	public void append(GetImageRequest requestGroup,
@@ -117,6 +127,9 @@ public class MarketSession {
 		request.addRequestGroup(RequestGroup.newBuilder().setImageRequest(
 				requestGroup));
 		callbacks.add(responseCallback);
+		if (request.getRequestGroupCount() == MAX_REQUEST_NUM) {
+			flush();
+		}
 	}
 
 	public ResponseGroup execute(RequestGroup requestGroup) {

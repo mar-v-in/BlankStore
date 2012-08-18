@@ -10,7 +10,7 @@ import com.android.vending.BlankListener;
 import com.gc.android.market.api.model.Market.App;
 import com.gc.android.market.api.model.Market.GetImageRequest.AppImageUsage;
 
-public abstract class QueryImageTask<Data, Res> extends
+public abstract class ImageTask<Data, Res> extends
 		BlankAsyncTask<Data, Res> {
 	public class DataSet extends BlankAsyncTask<Data, Res>.DataSet {
 		private final App app;

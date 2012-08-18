@@ -16,6 +16,8 @@ import com.gc.android.market.api.model.Market.GetAssetResponse.InstallAsset;
 
 public class SecureGooglePlayConnection extends GooglePlayConnection {
 
+	private final static String TAG = "SecureGooglePlay";
+
 	public interface Listener {
 
 		boolean isCancelled();
@@ -63,7 +65,7 @@ public class SecureGooglePlayConnection extends GooglePlayConnection {
 	@Override
 	public File queryAppDownload(App app,
 			SecureGooglePlayConnection.Listener listener) {
-		Log.d("SecureGooglePlay", "appDownload: " + app.getPackageName());
+		Log.d(TAG, "appDownload: " + app.getPackageName());
 		final File dir = new File(getCacheDir(), app.getPackageName());
 		makeDirectoryReady(dir);
 		File file = new File(dir, "APP-" + app.getVersionCode() + ".apk");
@@ -75,11 +77,18 @@ public class SecureGooglePlayConnection extends GooglePlayConnection {
 			installAsset = getInstallAssetSynced(app.getPackageName());
 		}
 		file = new File(dir, "APP-" + installAsset.getVersionCode() + ".apk");
+		if (file.exists()) {
+			return file;
+		}
+		File part = new File(file.getAbsolutePath()+".part");
+		if (part.exists()) {
+			part.delete();
+		}
 		final HttpURLConnection conn = setupConnectionForDownload(installAsset);
 		try {
 			final InputStream inputstream = conn.getInputStream();
 			final BufferedOutputStream stream = new BufferedOutputStream(
-					new FileOutputStream(file));
+					new FileOutputStream(part));
 			final int totalSize = conn.getContentLength();
 			int downloadedSize = 0;
 			final byte buf[] = new byte[1024];
@@ -95,16 +104,16 @@ public class SecureGooglePlayConnection extends GooglePlayConnection {
 				}
 				if (listener.isCancelled()) {
 					stream.close();
-					file.delete();
 					return null;
 				}
 
 			}
 			inputstream.close();
 			stream.close();
+			part.renameTo(file);
 			return file;
 		} catch (final Exception e) {
-			Log.d("SecureGooglePlay", "appDownload", e);
+			Log.d(TAG, "appDownload", e);
 			return null;
 		}
 

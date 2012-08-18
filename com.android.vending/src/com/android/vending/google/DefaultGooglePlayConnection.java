@@ -24,7 +24,7 @@ import com.gc.android.market.api.model.Market.ResponseContext;
 
 public class DefaultGooglePlayConnection extends GooglePlayConnection {
 
-	private static final String TAG = "DefaultGooglePlayConnection";
+	private static final String TAG = "DefaultGooglePlay";
 
 	private static final int APP_CACHE_SIZE = 500;
 	private static final int IMAGE_CACHE_SIZE = 500;
@@ -201,7 +201,7 @@ public class DefaultGooglePlayConnection extends GooglePlayConnection {
 
 	@Override
 	public List<App> queryAppsByName(List<String> packageNames,
-			boolean extendedInfo) {
+			final boolean extendedInfo) {
 		final List<App> results = new ArrayList<App>();
 		final List<AppsRequest> toRetrieve = new ArrayList<AppsRequest>();
 		final Callback<AppsResponse> callback = new Callback<AppsResponse>() {
@@ -210,7 +210,8 @@ public class DefaultGooglePlayConnection extends GooglePlayConnection {
 				if (response.getAppCount() > 0) {
 					results.add(response.getApp(0));
 					Log.d("DefaultGooglePlayConnection",
-							"queryAppsByName: pname:"
+							"queryAppsByName[extended=" + extendedInfo
+									+ "]: pname:"
 									+ response.getApp(0).getPackageName()
 									+ " [DONE]");
 				}
@@ -227,13 +228,17 @@ public class DefaultGooglePlayConnection extends GooglePlayConnection {
 			}
 		}
 		for (final AppsRequest request : toRetrieve) {
-			Log.d("DefaultGooglePlayConnection",
-					"queryAppsByName: " + request.getQuery() + " [START]");
+			Log.d("DefaultGooglePlayConnection", "queryAppsByName[extended="
+					+ extendedInfo + "]: " + request.getQuery() + " [START]");
 			synchronized (getSessionSync()) {
 				startAppsRequestSynced(request, callback);
-				getSession().flush();
 			}
 		}
+		synchronized (getSessionSync()) {
+			getSession().flush();
+		}
+		Log.d("DefaultGooglePlayConnection", "queryAppsByName[extended="
+				+ extendedInfo + "]: got " + results.size() + " answers");
 		addAppToCache(results);
 		return results;
 	}
@@ -312,7 +317,6 @@ public class DefaultGooglePlayConnection extends GooglePlayConnection {
 			openConnectionSynced();
 		}
 		getSessionSynced().append(request, callback);
-		getSessionSynced().flush();
 	}
 
 	private void startGetImageRequest(final GetImageRequest request,

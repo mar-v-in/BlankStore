@@ -149,7 +149,6 @@ public class BlankActivity extends Activity implements BlankListener {
 			Log.d("BlankActivity", "Accounts initialized.");
 
 			store.addListener(this);
-			store.startOpenConnection();
 			Log.d("BlankActivity", "BlankStore initialized.");
 		}
 		if (!showingFragment) {
@@ -285,5 +284,12 @@ public class BlankActivity extends Activity implements BlankListener {
 
 	public void uninstallApp(App app) {
 		store.startUninstallApp(app);
+	}
+
+	@Override
+	public void onDownloadAppFailed(App app) {
+		if (currentFragment instanceof BlankListener) {
+			((BlankListener) currentFragment).onDownloadAppFailed(app);
+		}
 	}
 }

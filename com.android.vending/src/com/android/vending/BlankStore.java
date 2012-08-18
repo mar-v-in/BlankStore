@@ -15,11 +15,11 @@ import android.widget.ImageView;
 
 import com.android.vending.BlankPackageInstaller.InstallCallback;
 import com.android.vending.BlankPackageInstaller.UninstallCallback;
-import com.android.vending.tasks.QueryAppDownloadTask;
-import com.android.vending.tasks.QueryAppListTask;
-import com.android.vending.tasks.QueryAppTask;
-import com.android.vending.tasks.QueryAppsTask;
-import com.android.vending.tasks.QueryImageToViewTask;
+import com.android.vending.tasks.AppDownloadTask;
+import com.android.vending.tasks.AppListTask;
+import com.android.vending.tasks.AppTask;
+import com.android.vending.tasks.AppsTask;
+import com.android.vending.tasks.ImageToViewTask;
 import com.gc.android.market.api.LoginException;
 import com.gc.android.market.api.model.Market.App;
 import com.gc.android.market.api.model.Market.GetImageRequest.AppImageUsage;
@@ -77,6 +77,14 @@ public class BlankStore implements BlankListener, InstallCallback,
 		builder.setAutoCancel(true);
 		builder.setContentTitle(activity.getText(R.string.app_installed));
 		builder.setSmallIcon(R.drawable.stat_sys_install_complete);
+		builder.setContentText(app.getTitle() + " " + app.getVersion());
+		return builder.getNotification();
+	}
+	private Notification buildFailedNotification(App app) {
+		final Notification.Builder builder = new Notification.Builder(activity);
+		builder.setAutoCancel(true);
+		builder.setContentTitle(activity.getText(R.string.download_notify_failed));
+		builder.setSmallIcon(android.R.drawable.stat_notify_error);
 		builder.setContentText(app.getTitle() + " " + app.getVersion());
 		return builder.getNotification();
 	}
@@ -226,7 +234,7 @@ public class BlankStore implements BlankListener, InstallCallback,
 	public void startQueryApp(String packageName, boolean extendedInfo) {
 		for (final BlankConnection connection : connections) {
 			if (connection.hasQueryApp()) {
-				final QueryAppTask task = new QueryAppTask();
+				final AppTask task = new AppTask();
 				task.execute(task.getDataSet(listeners, connection,
 						packageName, extendedInfo));
 				return;
@@ -237,7 +245,7 @@ public class BlankStore implements BlankListener, InstallCallback,
 	public void startQueryAppDownload(App app, Context context) {
 		for (final BlankConnection connection : connections) {
 			if (connection.hasQueryAppDownload()) {
-				final QueryAppDownloadTask task = new QueryAppDownloadTask();
+				final AppDownloadTask task = new AppDownloadTask();
 				task.execute(task.getDataSet(listeners, connection, app));
 				return;
 			}
@@ -269,7 +277,7 @@ public class BlankStore implements BlankListener, InstallCallback,
 			boolean extendedInfo) {
 		for (final BlankConnection connection : connections) {
 			if (connection.hasQueryAppList()) {
-				final QueryAppListTask task = new QueryAppListTask();
+				final AppListTask task = new AppListTask();
 				task.execute(task.getDataSet(listeners, connection, query,
 						start, num, extendedInfo));
 				return;
@@ -280,7 +288,7 @@ public class BlankStore implements BlankListener, InstallCallback,
 	public void startQueryApps(List<String> packageNames, boolean extendedInfo) {
 		for (final BlankConnection connection : connections) {
 			if (connection.hasQueryApp()) {
-				final QueryAppsTask task = new QueryAppsTask();
+				final AppsTask task = new AppsTask();
 				task.execute(task.getDataSet(listeners, connection,
 						packageNames, extendedInfo));
 				return;
@@ -292,7 +300,7 @@ public class BlankStore implements BlankListener, InstallCallback,
 			String imageId, AppImageUsage appImageUsage) {
 		for (final BlankConnection connection : connections) {
 			if (connection.hasQueryImage()) {
-				final QueryImageToViewTask task = new QueryImageToViewTask();
+				final ImageToViewTask task = new ImageToViewTask();
 				task.execute(task.getDataSet(listeners, connection, app,
 						imageId, appImageUsage, imageView));
 				return;
@@ -320,6 +328,13 @@ public class BlankStore implements BlankListener, InstallCallback,
 		for (final BlankListener listener : getListeners()) {
 			listener.onUninstallAppStarted(app);
 		}
+	}
+
+	@Override
+	public void onDownloadAppFailed(App app) {
+		getNotificationManager().notify(
+				app.getPackageName().hashCode() + activity.hashCode(),
+				buildFailedNotification(app));
 	}
 
 }

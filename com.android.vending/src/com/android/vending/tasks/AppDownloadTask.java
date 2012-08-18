@@ -10,9 +10,9 @@ import com.android.vending.BlankListener;
 import com.android.vending.google.SecureGooglePlayConnection;
 import com.gc.android.market.api.model.Market.App;
 
-public class QueryAppDownloadTask
+public class AppDownloadTask
 		extends
-		AsyncTask<QueryAppDownloadTask.DataSet, QueryAppDownloadTask.Progress, QueryAppDownloadTask.Result>
+		AsyncTask<AppDownloadTask.DataSet, AppDownloadTask.Progress, AppDownloadTask.Result>
 		implements SecureGooglePlayConnection.Listener {
 
 	public class DataSet {

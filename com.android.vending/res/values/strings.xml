@@ -5,6 +5,7 @@
     <string name="app_developer">NOGAPPS Project</string>
     <string name="download_notify_title">Downloading…</string>
     <string name="download_notify_finished">Download Finished.</string>
+    <string name="download_notify_failed">Download failed.</string>
     <string name="connect_notify_title">Connecting…</string>
     <string name="startdownload_notify_title">Starting Download…</string>
     <string name="search">Search</string>
