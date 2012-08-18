@@ -105,8 +105,14 @@ public class AppDownloadTask
 	@Override
 	protected void onPostExecute(Result result) {
 		super.onPostExecute(result);
-		for (final BlankListener listener : dataSet.getListeners()) {
-			listener.onDownloadAppDone(dataSet.getApp(), result.getFile());
+		if (result.getFile() != null) {
+			for (final BlankListener listener : dataSet.getListeners()) {
+				listener.onDownloadAppDone(dataSet.getApp(), result.getFile());
+			}
+		} else {
+			for (final BlankListener listener : dataSet.getListeners()) {
+				listener.onDownloadAppFailed(dataSet.getApp());
+			}
 		}
 	}
 

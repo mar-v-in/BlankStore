@@ -151,6 +151,7 @@ public class AppFragment extends BlankFragment implements OnClickListener {
 				&& app.getExtendedInfo().getScreenshotsCount() > 0) {
 			final LinearLayout screenshotContainer = (LinearLayout) getView()
 					.findViewById(R.id.screenshots);
+			screenshotContainer.removeAllViews();
 			for (int i = 1; i <= app.getExtendedInfo().getScreenshotsCount(); i++) {
 				final ImageView screenshot = new ImageView(getActivity());
 				screenshot.setTag(i);

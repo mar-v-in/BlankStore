@@ -103,6 +103,12 @@ public class BlankPackageInstaller {
 
 	public void installPackage(App app, File file,
 			InstallCallback installCallback) {
+		if (!file.exists()) {
+			Log.d(TAG, "Could not install " + app.getPackageName()
+					+ "! File does not exist: " + file.getAbsolutePath());
+			installCallback.installDone(app);
+			return;
+		}
 		int installFlags = 0;
 		final PackageManager pm = context.getPackageManager();
 		try {
