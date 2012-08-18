@@ -48,10 +48,6 @@ public class BlankActivity extends Activity implements BlankListener {
 		store.startQueryAppDownload(app, this);
 	}
 
-	public void getApp(String packageName) {
-		getApp(packageName, true);
-	}
-
 	public void getApp(String packageName, boolean extendedInfo) {
 		store.startQueryApp(packageName, extendedInfo);
 	}
@@ -71,7 +67,8 @@ public class BlankActivity extends Activity implements BlankListener {
 
 	public void goAppDetails(String packageName) {
 		goAppDetails();
-		getApp(packageName);
+		getApp(packageName, false);
+		getApp(packageName, true);
 	}
 
 	public void goAppList() {

@@ -61,7 +61,10 @@ public class AppFragment extends BlankFragment implements OnClickListener {
 		view.findViewById(R.id.view_description).setVisibility(View.VISIBLE);
 		view.findViewById(R.id.view_details).setVisibility(View.VISIBLE);
 		view.findViewById(R.id.view_header).setVisibility(View.VISIBLE);
-		view.findViewById(R.id.prog_loading).setVisibility(View.GONE);
+		view.findViewById(R.id.screenshots).setVisibility(View.VISIBLE);
+		if (app.hasExtendedInfo()) {
+			view.findViewById(R.id.prog_loading).setVisibility(View.GONE);
+		}
 		view.findViewById(R.id.btn_install).setVisibility(View.INVISIBLE);
 		view.findViewById(R.id.installed_view).setVisibility(View.GONE);
 		view.findViewById(R.id.installing_view).setVisibility(View.GONE);
@@ -104,18 +107,20 @@ public class AppFragment extends BlankFragment implements OnClickListener {
 				.findViewById(R.id.txt_lastupdate);
 		lastUpdate.setText("Version " + app.getVersion());
 
-		final TextView downloads = (TextView) view
-				.findViewById(R.id.txt_downloads);
-		downloads.setText(app.getExtendedInfo().getDownloadsCountText() + " "
-				+ getText(R.string.details_downloads));
+		if (app.hasExtendedInfo()) {
+			final TextView downloads = (TextView) view
+					.findViewById(R.id.txt_downloads);
+			downloads.setText(app.getExtendedInfo().getDownloadsCountText()
+					+ " " + getText(R.string.details_downloads));
 
-		final TextView size = (TextView) view.findViewById(R.id.txt_size);
-		size.setText(Utils.niceSize(app.getExtendedInfo().getInstallSize()));
+			final TextView size = (TextView) view.findViewById(R.id.txt_size);
+			size.setText(Utils.niceSize(app.getExtendedInfo().getInstallSize()));
 
-		final TextView description = (TextView) view
-				.findViewById(R.id.txt_description);
-		description.setText(Html.fromHtml(app.getExtendedInfo()
-				.getDescription().replace("\n", "<br />")));
+			final TextView description = (TextView) view
+					.findViewById(R.id.txt_description);
+			description.setText(Html.fromHtml(app.getExtendedInfo()
+					.getDescription().replace("\n", "<br />")));
+		}
 
 		final Button install = (Button) view.findViewById(R.id.btn_install);
 		install.setOnClickListener(this);

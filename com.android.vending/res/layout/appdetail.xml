@@ -197,7 +197,9 @@
                 <LinearLayout
                     android:id="@+id/screenshots"
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent" >
+                    android:layout_height="210px"
+                    android:visibility="gone" >
+
                 </LinearLayout>
             </HorizontalScrollView>
 
