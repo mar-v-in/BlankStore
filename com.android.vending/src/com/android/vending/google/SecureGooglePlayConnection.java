@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
+import java.net.SocketException;
 import java.net.URL;
 import java.util.Date;
 
@@ -80,17 +81,24 @@ public class SecureGooglePlayConnection extends GooglePlayConnection {
 		if (file.exists()) {
 			return file;
 		}
+		return downloadPart(installAsset, file, listener, 0);
+	}
+
+	private File downloadPart(InstallAsset installAsset, File file,
+			SecureGooglePlayConnection.Listener listener, int originalSize) {
 		final File part = new File(file.getAbsolutePath() + ".part");
-		if (part.exists()) {
+		if (originalSize == 0 && part.exists()) {
 			part.delete();
 		}
-		final HttpURLConnection conn = setupConnectionForDownload(installAsset);
+		int downloadedSize = (int) part.length();
+		final HttpURLConnection conn = setupConnectionForDownload(installAsset,
+				downloadedSize);
 		try {
 			final InputStream inputstream = conn.getInputStream();
 			final BufferedOutputStream stream = new BufferedOutputStream(
 					new FileOutputStream(part));
-			final int totalSize = conn.getContentLength();
-			int downloadedSize = 0;
+			final int totalSize = (int) ((conn.getContentLength() != -1) ? conn
+					.getContentLength() : installAsset.getAssetSize());
 			final byte buf[] = new byte[1024];
 			int bufferlength = 0;
 			long lastPublish = 0;
@@ -101,7 +109,8 @@ public class SecureGooglePlayConnection extends GooglePlayConnection {
 				final long t = new Date().getTime();
 				final double percent = (double) downloadedSize
 						/ (double) totalSize;
-				if (lastPublish + 1000 < t || percent > lastPercent + 0.05) {
+				if (percent < 1
+						&& (lastPublish + 1000 < t || percent > lastPercent + 0.05)) {
 					listener.onDownloadProgress(downloadedSize, totalSize);
 					lastPublish = t;
 					lastPercent = percent;
@@ -116,15 +125,23 @@ public class SecureGooglePlayConnection extends GooglePlayConnection {
 			stream.close();
 			part.renameTo(file);
 			return file;
+		} catch (final SocketException e) {
+			Log.d(TAG, "appDownload", e);
+			if (downloadedSize > originalSize) {
+				Log.d(TAG, "appDownload: nevermind - tryin to continue");
+				return downloadPart(installAsset, file, listener, downloadedSize);
+			} else {
+				Log.d(TAG, "appDownload: uhm - continue didn't help - than bail out!");
+				return null;
+			}
 		} catch (final Exception e) {
 			Log.d(TAG, "appDownload", e);
 			return null;
 		}
-
 	}
 
 	private HttpURLConnection setupConnectionForDownload(
-			InstallAsset installAsset) {
+			InstallAsset installAsset, int downloadedSize) {
 		try {
 			final HttpURLConnection conn = (HttpURLConnection) new URL(
 					installAsset.getBlobUrl()).openConnection();
