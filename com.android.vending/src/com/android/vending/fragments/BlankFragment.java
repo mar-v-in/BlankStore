@@ -17,6 +17,12 @@ public class BlankFragment extends Fragment implements BlankListener {
 	}
 
 	@Override
+	public void onDownloadAppFailed(App app) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
 	public void onDownloadAppProgess(App app, int progress, int max) {
 
 	}
@@ -59,12 +65,6 @@ public class BlankFragment extends Fragment implements BlankListener {
 	@Override
 	public void onUninstallAppStarted(App app) {
 
-	}
-
-	@Override
-	public void onDownloadAppFailed(App app) {
-		// TODO Auto-generated method stub
-		
 	}
 
 }

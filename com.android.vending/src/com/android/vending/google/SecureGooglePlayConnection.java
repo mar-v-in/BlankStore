@@ -16,8 +16,6 @@ import com.gc.android.market.api.model.Market.GetAssetResponse.InstallAsset;
 
 public class SecureGooglePlayConnection extends GooglePlayConnection {
 
-	private final static String TAG = "SecureGooglePlay";
-
 	public interface Listener {
 
 		boolean isCancelled();
@@ -25,6 +23,8 @@ public class SecureGooglePlayConnection extends GooglePlayConnection {
 		void onDownloadProgress(int progress, int max);
 
 	}
+
+	private final static String TAG = "SecureGooglePlay";
 
 	public SecureGooglePlayConnection(Account account) {
 		this(account.getLogin(), account.getPassword(), account.getAndroidId(),
@@ -80,7 +80,7 @@ public class SecureGooglePlayConnection extends GooglePlayConnection {
 		if (file.exists()) {
 			return file;
 		}
-		File part = new File(file.getAbsolutePath()+".part");
+		final File part = new File(file.getAbsolutePath() + ".part");
 		if (part.exists()) {
 			part.delete();
 		}
@@ -94,13 +94,17 @@ public class SecureGooglePlayConnection extends GooglePlayConnection {
 			final byte buf[] = new byte[1024];
 			int bufferlength = 0;
 			long lastPublish = 0;
+			double lastPercent = 0;
 			while ((bufferlength = inputstream.read(buf)) != -1) {
 				stream.write(buf, 0, bufferlength);
 				downloadedSize += bufferlength;
 				final long t = new Date().getTime();
-				if (lastPublish + 2000 < t) {
+				final double percent = (double) downloadedSize
+						/ (double) totalSize;
+				if (lastPublish + 1000 < t || percent > lastPercent + 0.05) {
 					listener.onDownloadProgress(downloadedSize, totalSize);
 					lastPublish = t;
+					lastPercent = percent;
 				}
 				if (listener.isCancelled()) {
 					stream.close();

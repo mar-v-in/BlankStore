@@ -204,16 +204,6 @@ public class AppFragment extends BlankFragment implements OnClickListener {
 
 	@Override
 	public void onDownloadAppDone(App app, File file) {
-		if (app != null
-				&& this.app != null
-				&& app.getPackageName().equalsIgnoreCase(
-						this.app.getPackageName())) {
-			makeView(getView());
-		}
-	}
-
-	@Override
-	public void onDownloadAppFailed(App app) {
 		if (this.app != null
 				&& app.getPackageName().equalsIgnoreCase(
 						this.app.getPackageName())) {
@@ -227,6 +217,16 @@ public class AppFragment extends BlankFragment implements OnClickListener {
 			final TextView percent = (TextView) getView().findViewById(
 					R.id.txt_download_percent);
 			percent.setText("");
+		}
+	}
+
+	@Override
+	public void onDownloadAppFailed(App app) {
+		if (app != null
+				&& this.app != null
+				&& app.getPackageName().equalsIgnoreCase(
+						this.app.getPackageName())) {
+			makeView(getView());
 		}
 	}
 

@@ -72,19 +72,21 @@ public class BlankStore implements BlankListener, InstallCallback,
 		return builder.getNotification();
 	}
 
+	private Notification buildFailedNotification(App app) {
+		final Notification.Builder builder = new Notification.Builder(activity);
+		builder.setAutoCancel(true);
+		builder.setContentTitle(activity
+				.getText(R.string.download_notify_failed));
+		builder.setSmallIcon(android.R.drawable.stat_notify_error);
+		builder.setContentText(app.getTitle() + " " + app.getVersion());
+		return builder.getNotification();
+	}
+
 	private Notification buildInstalledNotification(App app) {
 		final Notification.Builder builder = new Notification.Builder(activity);
 		builder.setAutoCancel(true);
 		builder.setContentTitle(activity.getText(R.string.app_installed));
 		builder.setSmallIcon(R.drawable.stat_sys_install_complete);
-		builder.setContentText(app.getTitle() + " " + app.getVersion());
-		return builder.getNotification();
-	}
-	private Notification buildFailedNotification(App app) {
-		final Notification.Builder builder = new Notification.Builder(activity);
-		builder.setAutoCancel(true);
-		builder.setContentTitle(activity.getText(R.string.download_notify_failed));
-		builder.setSmallIcon(android.R.drawable.stat_notify_error);
 		builder.setContentText(app.getTitle() + " " + app.getVersion());
 		return builder.getNotification();
 	}
@@ -134,6 +136,13 @@ public class BlankStore implements BlankListener, InstallCallback,
 				app.getPackageName().hashCode() + activity.hashCode(),
 				buildInstallingNotification(app));
 		startInstallApp(app, file);
+	}
+
+	@Override
+	public void onDownloadAppFailed(App app) {
+		getNotificationManager().notify(
+				app.getPackageName().hashCode() + activity.hashCode(),
+				buildFailedNotification(app));
 	}
 
 	@Override
@@ -328,13 +337,6 @@ public class BlankStore implements BlankListener, InstallCallback,
 		for (final BlankListener listener : getListeners()) {
 			listener.onUninstallAppStarted(app);
 		}
-	}
-
-	@Override
-	public void onDownloadAppFailed(App app) {
-		getNotificationManager().notify(
-				app.getPackageName().hashCode() + activity.hashCode(),
-				buildFailedNotification(app));
 	}
 
 }

@@ -7,8 +7,7 @@ import com.android.vending.BlankConnection;
 import com.android.vending.BlankListener;
 import com.gc.android.market.api.model.Market.App;
 
-public class AppsTask extends
-		BlankAsyncTask<AppsTask.DataSet, AppsTask.Result> {
+public class AppsTask extends BlankAsyncTask<AppsTask.DataSet, AppsTask.Result> {
 	public class DataSet extends BlankAsyncTask<DataSet, Result>.DataSet {
 		private final List<String> packageNames;
 		private final boolean extendedInfo;

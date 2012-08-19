@@ -186,6 +186,13 @@ public class BlankActivity extends Activity implements BlankListener {
 	}
 
 	@Override
+	public void onDownloadAppFailed(App app) {
+		if (currentFragment instanceof BlankListener) {
+			((BlankListener) currentFragment).onDownloadAppFailed(app);
+		}
+	}
+
+	@Override
 	public void onDownloadAppProgess(App app, int progress, int max) {
 		if (currentFragment instanceof BlankListener) {
 			((BlankListener) currentFragment).onDownloadAppProgess(app,
@@ -281,12 +288,5 @@ public class BlankActivity extends Activity implements BlankListener {
 
 	public void uninstallApp(App app) {
 		store.startUninstallApp(app);
-	}
-
-	@Override
-	public void onDownloadAppFailed(App app) {
-		if (currentFragment instanceof BlankListener) {
-			((BlankListener) currentFragment).onDownloadAppFailed(app);
-		}
 	}
 }
