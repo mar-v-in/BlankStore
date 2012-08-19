@@ -3,6 +3,7 @@ package com.android.vending.google;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.SocketException;
@@ -45,6 +46,77 @@ public class SecureGooglePlayConnection extends GooglePlayConnection {
 				operatorNumeric);
 	}
 
+	private File downloadPart(InstallAsset installAsset, File file,
+			SecureGooglePlayConnection.Listener listener, int originalSize) {
+		final File part = new File(file.getAbsolutePath() + ".part");
+		if (originalSize == 0 && part.exists()) {
+			part.delete();
+		}
+		int downloadedSize = (int) part.length();
+		final HttpURLConnection conn = setupConnectionForDownload(installAsset,
+				downloadedSize);
+		InputStream inputstream = null;
+		BufferedOutputStream stream = null;
+		try {
+			inputstream = conn.getInputStream();
+			stream = new BufferedOutputStream(new FileOutputStream(part, true));
+			final int totalSize = downloadedSize
+					+ (int) ((conn.getContentLength() != -1) ? conn
+							.getContentLength() : installAsset.getAssetSize());
+			final byte buf[] = new byte[1024];
+			int bufferlength = 0;
+			long lastPublish = 0;
+			double lastPercent = 0;
+			while ((bufferlength = inputstream.read(buf)) != -1) {
+				stream.write(buf, 0, bufferlength);
+				downloadedSize += bufferlength;
+				final long t = new Date().getTime();
+				final double percent = (double) downloadedSize
+						/ (double) totalSize;
+				if (percent < 1
+						&& (lastPublish + 1000 < t || percent > lastPercent + 0.05)) {
+					listener.onDownloadProgress(downloadedSize, totalSize);
+					lastPublish = t;
+					lastPercent = percent;
+				}
+				if (listener.isCancelled()) {
+					stream.close();
+					return null;
+				}
+			}
+			inputstream.close();
+			stream.close();
+			part.renameTo(file);
+			return file;
+		} catch (final SocketException e) {
+			Log.d(TAG, "appDownload", e);
+			if (inputstream != null) {
+				try {
+					inputstream.close();
+				} catch (final IOException ex) {
+				}
+			}
+			if (stream != null) {
+				try {
+					stream.close();
+				} catch (final IOException ex) {
+				}
+			}
+			if (downloadedSize > originalSize) {
+				Log.d(TAG, "appDownload: nevermind - tryin to continue");
+				return downloadPart(installAsset, file, listener,
+						downloadedSize);
+			} else {
+				Log.d(TAG,
+						"appDownload: uhm - continue didn't help - than bail out!");
+				return null;
+			}
+		} catch (final Exception e) {
+			Log.d(TAG, "appDownload", e);
+			return null;
+		}
+	}
+
 	private InstallAsset getInstallAssetSynced(String packageName) {
 		if (!isReadySynced()) {
 			openConnectionSynced();
@@ -84,62 +156,6 @@ public class SecureGooglePlayConnection extends GooglePlayConnection {
 		return downloadPart(installAsset, file, listener, 0);
 	}
 
-	private File downloadPart(InstallAsset installAsset, File file,
-			SecureGooglePlayConnection.Listener listener, int originalSize) {
-		final File part = new File(file.getAbsolutePath() + ".part");
-		if (originalSize == 0 && part.exists()) {
-			part.delete();
-		}
-		int downloadedSize = (int) part.length();
-		final HttpURLConnection conn = setupConnectionForDownload(installAsset,
-				downloadedSize);
-		try {
-			final InputStream inputstream = conn.getInputStream();
-			final BufferedOutputStream stream = new BufferedOutputStream(
-					new FileOutputStream(part));
-			final int totalSize = (int) ((conn.getContentLength() != -1) ? conn
-					.getContentLength() : installAsset.getAssetSize());
-			final byte buf[] = new byte[1024];
-			int bufferlength = 0;
-			long lastPublish = 0;
-			double lastPercent = 0;
-			while ((bufferlength = inputstream.read(buf)) != -1) {
-				stream.write(buf, 0, bufferlength);
-				downloadedSize += bufferlength;
-				final long t = new Date().getTime();
-				final double percent = (double) downloadedSize
-						/ (double) totalSize;
-				if (percent < 1
-						&& (lastPublish + 1000 < t || percent > lastPercent + 0.05)) {
-					listener.onDownloadProgress(downloadedSize, totalSize);
-					lastPublish = t;
-					lastPercent = percent;
-				}
-				if (listener.isCancelled()) {
-					stream.close();
-					return null;
-				}
-
-			}
-			inputstream.close();
-			stream.close();
-			part.renameTo(file);
-			return file;
-		} catch (final SocketException e) {
-			Log.d(TAG, "appDownload", e);
-			if (downloadedSize > originalSize) {
-				Log.d(TAG, "appDownload: nevermind - tryin to continue");
-				return downloadPart(installAsset, file, listener, downloadedSize);
-			} else {
-				Log.d(TAG, "appDownload: uhm - continue didn't help - than bail out!");
-				return null;
-			}
-		} catch (final Exception e) {
-			Log.d(TAG, "appDownload", e);
-			return null;
-		}
-	}
-
 	private HttpURLConnection setupConnectionForDownload(
 			InstallAsset installAsset, int downloadedSize) {
 		try {
@@ -151,6 +167,10 @@ public class SecureGooglePlayConnection extends GooglePlayConnection {
 			conn.setRequestProperty("Cookie",
 					installAsset.getDownloadAuthCookieName() + "="
 							+ installAsset.getDownloadAuthCookieValue());
+			if (downloadedSize > 0) {
+				conn.setRequestProperty("Range", "bytes=" + downloadedSize
+						+ "-");
+			}
 			return conn;
 		} catch (final Exception e) {
 			Log.d("SecureGooglePlay", "connectDownload", e);
