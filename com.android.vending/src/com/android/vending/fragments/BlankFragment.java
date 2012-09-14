@@ -3,7 +3,7 @@ package com.android.vending.fragments;
 import java.io.File;
 import java.util.List;
 
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 
 import com.android.vending.BlankListener;
 import com.gc.android.market.api.LoginException;

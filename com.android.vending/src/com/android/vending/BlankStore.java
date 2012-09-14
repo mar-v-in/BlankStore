@@ -10,6 +10,7 @@ import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.content.Context;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.widget.ImageView;
 
@@ -54,7 +55,7 @@ public class BlankStore implements BlankListener, InstallCallback,
 
 	private Notification buildDownloadNotification(App app, int progress,
 			int max) {
-		final Notification.Builder builder = new Notification.Builder(activity);
+		final NotificationCompat.Builder builder = new NotificationCompat.Builder(activity);
 
 		if (firstPublish == null) {
 			firstPublish = new Date();
@@ -69,35 +70,35 @@ public class BlankStore implements BlankListener, InstallCallback,
 		builder.setWhen(firstPublish.getTime());
 
 		builder.setContentText(app.getTitle() + " " + app.getVersion());
-		return builder.getNotification();
+		return builder.build();
 	}
 
 	private Notification buildFailedNotification(App app) {
-		final Notification.Builder builder = new Notification.Builder(activity);
+		final NotificationCompat.Builder builder = new NotificationCompat.Builder(activity);
 		builder.setAutoCancel(true);
 		builder.setContentTitle(activity
 				.getText(R.string.download_notify_failed));
 		builder.setSmallIcon(android.R.drawable.stat_notify_error);
 		builder.setContentText(app.getTitle() + " " + app.getVersion());
-		return builder.getNotification();
+		return builder.build();
 	}
 
 	private Notification buildInstalledNotification(App app) {
-		final Notification.Builder builder = new Notification.Builder(activity);
+		final NotificationCompat.Builder builder = new NotificationCompat.Builder(activity);
 		builder.setAutoCancel(true);
 		builder.setContentTitle(activity.getText(R.string.app_installed));
 		builder.setSmallIcon(R.drawable.stat_sys_install_complete);
 		builder.setContentText(app.getTitle() + " " + app.getVersion());
-		return builder.getNotification();
+		return builder.build();
 	}
 
 	private Notification buildInstallingNotification(App app) {
-		final Notification.Builder builder = new Notification.Builder(activity);
+		final NotificationCompat.Builder builder = new NotificationCompat.Builder(activity);
 		builder.setAutoCancel(true);
 		builder.setContentTitle(activity.getText(R.string.app_installing));
 		builder.setSmallIcon(android.R.drawable.stat_sys_download);
 		builder.setContentText(app.getTitle() + " " + app.getVersion());
-		return builder.getNotification();
+		return builder.build();
 	}
 
 	public List<BlankListener> getListeners() {

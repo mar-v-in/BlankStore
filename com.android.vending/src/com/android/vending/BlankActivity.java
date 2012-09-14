@@ -3,15 +3,18 @@ package com.android.vending;
 import java.io.File;
 import java.util.List;
 
-import android.app.Activity;
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.annotation.TargetApi;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.SearchView;
@@ -31,14 +34,14 @@ import com.gc.android.market.api.LoginException;
 import com.gc.android.market.api.model.Market.App;
 import com.gc.android.market.api.model.Market.GetImageRequest.AppImageUsage;
 
-public class BlankActivity extends Activity implements BlankListener {
+public class BlankActivity extends FragmentActivity implements BlankListener {
 
 	private boolean showingFragment = false;
 	private FragmentManager fragmentManager;
 	private Fragment currentFragment;
 	private final BlankStore store;
 	private Menu menu;
-	private SearchView searchView;
+	private View searchView;
 
 	public BlankActivity() {
 		store = new BlankStore(this);
@@ -121,7 +124,7 @@ public class BlankActivity extends Activity implements BlankListener {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
-		fragmentManager = getFragmentManager();
+		fragmentManager = getSupportFragmentManager();
 		if (!store.isReady()) {
 			final AccountManager accountManager = AccountManager
 					.getInstance(this);
@@ -151,7 +154,46 @@ public class BlankActivity extends Activity implements BlankListener {
 		if (!showingFragment) {
 			goFragment(new StartFragment());
 		}
-		getActionBar().setTitle(R.string.apps);
+		setVisibleTitle(R.string.apps);
+	}
+
+	public void setVisibleTitle(CharSequence title) {
+		if (Build.VERSION.SDK_INT >= 11) {
+			setActionBarTitle(title);
+		} else {
+			setTitle(title);
+		}
+	}
+
+	public void setVisibleTitle(int resId) {
+		setVisibleTitle(getText(resId));
+	}
+
+	@TargetApi(11)
+	public void setActionBarTitle(CharSequence title) {
+		getActionBar().setTitle(title);
+	}
+
+	@TargetApi(11)
+	public void initSearchView(Menu menu) {
+		searchView = menu.findItem(R.id.menu_search).getActionView();
+		((SearchView) searchView)
+				.setQueryHint(getText(R.string.menu_search_hint));
+		((SearchView) searchView)
+				.setOnQueryTextListener(new OnQueryTextListener() {
+
+					@Override
+					public boolean onQueryTextChange(String newText) {
+						return true;
+					}
+
+					@Override
+					public boolean onQueryTextSubmit(String query) {
+						startSearch(((SearchView) searchView).getQuery()
+								.toString());
+						return true;
+					}
+				});
 	}
 
 	@Override
@@ -159,22 +201,10 @@ public class BlankActivity extends Activity implements BlankListener {
 		final MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.main, menu);
 		this.menu = menu;
-		searchView = (SearchView) menu.findItem(R.id.menu_search)
-				.getActionView();
-		searchView.setQueryHint(getText(R.string.menu_search_hint));
-		searchView.setOnQueryTextListener(new OnQueryTextListener() {
+		if (Build.VERSION.SDK_INT >= 11) {
+			initSearchView(menu);
+		}
 
-			@Override
-			public boolean onQueryTextChange(String newText) {
-				return true;
-			}
-
-			@Override
-			public boolean onQueryTextSubmit(String query) {
-				startSearch((searchView).getQuery().toString());
-				return true;
-			}
-		});
 		return true;
 	}
 
@@ -259,10 +289,38 @@ public class BlankActivity extends Activity implements BlankListener {
 	public void openInsalled() {
 		goFragment(new InstalledAppsFragment());
 	}
+	
+	@TargetApi(14)
+	public void expandSearchView() {
+		menu.findItem(R.id.menu_search).expandActionView();
+	}
+	
+	@TargetApi(14)
+	public void collapseSearchView() {
+		menu.findItem(R.id.menu_search).collapseActionView();
+	}
+	
+	
+	@TargetApi(11)
+	public void selectSearchView() {
+		if(Build.VERSION.SDK_INT >= 14) {
+			expandSearchView();
+		}
+		((SearchView)searchView).requestFocus();
+	}
 
 	public void selectSearch() {
-		menu.findItem(R.id.menu_search).expandActionView();
-		searchView.requestFocus();
+		if (Build.VERSION.SDK_INT >= 11) {
+			selectSearchView();
+		} else {
+			
+		}
+	}
+	
+	public void hideSearch() {
+		if(Build.VERSION.SDK_INT >= 14) {
+			collapseSearchView();
+		}
 	}
 
 	public void startApp(App app) {
@@ -277,7 +335,9 @@ public class BlankActivity extends Activity implements BlankListener {
 		if (menu != null && searchView != null) {
 			final InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
 			imm.hideSoftInputFromWindow(searchView.getWindowToken(), 0);
-			menu.findItem(R.id.menu_search).collapseActionView();
+			if(Build.VERSION.SDK_INT >= 14) {
+				collapseSearchView();
+			}
 		}
 	}
 
