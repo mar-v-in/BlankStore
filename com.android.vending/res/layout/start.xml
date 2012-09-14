@@ -4,12 +4,36 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <Button
-        android:id="@+id/btn_search"
+    <LinearLayout
+        android:id="@+id/compatSearchField"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:text="@string/search" />
+        android:visibility="gone" >
+
+        <EditText
+            android:id="@+id/compatSearchText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_margin="10dp"
+            android:layout_weight="1"
+            android:ems="10"
+            android:hint="@string/search"
+            android:inputType="textNoSuggestions"
+            android:singleLine="true"
+            android:visibility="visible" >
+
+        </EditText>
+
+        <Button
+            android:id="@+id/btn_search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_weight="0"
+            android:text="@string/search" />
+
+    </LinearLayout>
 
     <Button
         android:id="@+id/btn_apps"

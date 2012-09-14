@@ -9,7 +9,9 @@ import java.util.List;
 import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.widget.ImageView;
@@ -68,6 +70,7 @@ public class BlankStore implements BlankListener, InstallCallback,
 		builder.setContentInfo(Utils.niceSize(progress) + " / "
 				+ Utils.niceSize(max));
 		builder.setWhen(firstPublish.getTime());
+		builder.setContentIntent(PendingIntent.getActivity(activity, 0, new Intent(), 0));
 
 		builder.setContentText(app.getTitle() + " " + app.getVersion());
 		return builder.build();
@@ -80,6 +83,8 @@ public class BlankStore implements BlankListener, InstallCallback,
 				.getText(R.string.download_notify_failed));
 		builder.setSmallIcon(android.R.drawable.stat_notify_error);
 		builder.setContentText(app.getTitle() + " " + app.getVersion());
+		builder.setContentIntent(PendingIntent.getActivity(activity, 0, new Intent(), 0));
+
 		return builder.build();
 	}
 
@@ -89,6 +94,8 @@ public class BlankStore implements BlankListener, InstallCallback,
 		builder.setContentTitle(activity.getText(R.string.app_installed));
 		builder.setSmallIcon(R.drawable.stat_sys_install_complete);
 		builder.setContentText(app.getTitle() + " " + app.getVersion());
+		builder.setContentIntent(PendingIntent.getActivity(activity, 0, new Intent(), 0));
+
 		return builder.build();
 	}
 
@@ -98,6 +105,8 @@ public class BlankStore implements BlankListener, InstallCallback,
 		builder.setContentTitle(activity.getText(R.string.app_installing));
 		builder.setSmallIcon(android.R.drawable.stat_sys_download);
 		builder.setContentText(app.getTitle() + " " + app.getVersion());
+		builder.setContentIntent(PendingIntent.getActivity(activity, 0, new Intent(), 0));
+
 		return builder.build();
 	}
 

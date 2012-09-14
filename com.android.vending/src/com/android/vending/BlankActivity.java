@@ -286,7 +286,7 @@ public class BlankActivity extends FragmentActivity implements BlankListener {
 		}
 	}
 
-	public void openInsalled() {
+	public void openInstalled() {
 		goFragment(new InstalledAppsFragment());
 	}
 	
@@ -312,8 +312,6 @@ public class BlankActivity extends FragmentActivity implements BlankListener {
 	public void selectSearch() {
 		if (Build.VERSION.SDK_INT >= 11) {
 			selectSearchView();
-		} else {
-			
 		}
 	}
 	
