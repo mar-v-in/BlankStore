@@ -43,8 +43,8 @@ public class Cache<Identifier, Item> {
 		if (item == null || ident == null) {
 			return;
 		}
-		map.put(ident, item);
 		synchronized (range) {
+			map.put(ident, item);
 			if (range.contains(ident)) {
 				range.remove(ident);
 			}
