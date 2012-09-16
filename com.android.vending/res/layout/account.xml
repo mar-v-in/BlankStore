@@ -4,11 +4,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <View
-        android:id="@+id/view1"
-        android:layout_width="wrap_content"
-        android:layout_height="50dp" />
-
     <EditText
         android:id="@+id/txt_login"
         android:layout_width="match_parent"
@@ -48,7 +43,9 @@
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
             android:layout_weight="1"
-            android:ems="10" />
+            android:ems="10"
+            android:hint="@string/operatorName"
+            android:inputType="textNoSuggestions" />
 
         <EditText
             android:id="@+id/txt_opNum"
@@ -57,6 +54,32 @@
             android:layout_margin="5dp"
             android:layout_weight="1"
             android:ems="10"
+            android:hint="@string/operatorCode"
+            android:inputType="number" />
+    </LinearLayout>
+    
+        <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <EditText
+            android:id="@+id/txt_devName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:layout_weight="1"
+            android:ems="10"
+            android:hint="@string/deviceName"
+            android:inputType="textNoSuggestions" />
+
+        <EditText
+            android:id="@+id/txt_sdkV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:layout_weight="1"
+            android:ems="10"
+            android:hint="@string/sdkVersion"
             android:inputType="number" />
     </LinearLayout>
 

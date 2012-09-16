@@ -37,22 +37,24 @@ public class DefaultGooglePlayConnection extends GooglePlayConnection {
 
 	public DefaultGooglePlayConnection(Account account) {
 		this(account.getLogin(), account.getPassword(), account.getAndroidId(),
-				account.getOperatorAlpha(), account.getOperatorNumeric());
+				account.getOperatorAlpha(), account.getOperatorNumeric(),
+				account.getDeviceName(), account.getSdkVersion());
 	}
 
 	public DefaultGooglePlayConnection(String email, String password,
 			String androidId, File cacheDir, String operatorAlpha,
-			String operatorNumeric) {
+			String operatorNumeric, String deviceName, int sdkVersion) {
 		super(email, password, androidId, cacheDir, operatorAlpha,
-				operatorNumeric);
+				operatorNumeric, deviceName, sdkVersion);
 		appList = new Cache<String, App>(APP_CACHE_SIZE);
 		imageCache = new Cache<String, Bitmap>(IMAGE_CACHE_SIZE);
 	}
 
 	public DefaultGooglePlayConnection(String email, String password,
-			String androidId, String operatorAlpha, String operatorNumeric) {
+			String androidId, String operatorAlpha, String operatorNumeric,
+			String deviceName, int sdkVersion) {
 		this(email, password, androidId, DEFAULT_CACHE_DIR, operatorAlpha,
-				operatorNumeric);
+				operatorNumeric, deviceName, sdkVersion);
 	}
 
 	private void addAppToCache(App app) {

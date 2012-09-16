@@ -38,11 +38,12 @@ public class AccountActivity extends Activity implements OnClickListener {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.account);
+		Account a = new Account(null, null, null);
 		final TelephonyManager telephonyManager = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
-		((EditText) findViewById(R.id.txt_opAlpha)).setText(telephonyManager
-				.getNetworkOperatorName());
-		((EditText) findViewById(R.id.txt_opNum)).setText(telephonyManager
-				.getNetworkOperator());
+		((EditText) findViewById(R.id.txt_opAlpha)).setText(a.getOperatorAlpha(this));
+		((EditText) findViewById(R.id.txt_opNum)).setText(a.getOperatorNumeric(this));
+		((EditText) findViewById(R.id.txt_devName)).setText(a.getDeviceName());
+		((EditText) findViewById(R.id.txt_sdkV)).setText(a.getSdkVersion());
 		findViewById(R.id.btn_create_account).setOnClickListener(this);
 	}
 }

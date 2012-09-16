@@ -17,19 +17,23 @@ public abstract class GooglePlayConnection extends BlankConnection {
 	private final File cacheDir;
 	private final String operatorAlpha;
 	private final String operatorNumeric;
+	private final String deviceName;
+	private final int sdkVersion;
 
 	public static File DEFAULT_CACHE_DIR = new File(
 			Environment.getExternalStorageDirectory(), ".nogapps/blankstore");
 
 	public GooglePlayConnection(String email, String password,
 			String androidId, File cacheDir, String operatorAlpha,
-			String operatorNumeric) {
+			String operatorNumeric, String deviceName, int sdkVersion) {
 		this.email = email;
 		this.password = password;
 		this.androidId = androidId;
 		this.cacheDir = cacheDir;
 		this.operatorAlpha = operatorAlpha;
 		this.operatorNumeric = operatorNumeric;
+		this.deviceName = deviceName;
+		this.sdkVersion = sdkVersion;
 		sessionSync = 1;
 	}
 
@@ -122,9 +126,8 @@ public abstract class GooglePlayConnection extends BlankConnection {
 	void openConnectionSynced() {
 		makeDirectoryReady(getCacheDir());
 		session = new MarketSession(isSecure());
-		if (operatorAlpha != null && operatorNumeric != null) {
-			session.setOperator(operatorAlpha, operatorNumeric);
-		}
+		session.setOperator(operatorAlpha, operatorNumeric);
+		session.setDeviceAndSdkVersion(deviceName, sdkVersion);
 		session.login(email, password, androidId);
 	}
 }

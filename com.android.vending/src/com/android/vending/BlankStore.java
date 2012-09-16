@@ -57,7 +57,8 @@ public class BlankStore implements BlankListener, InstallCallback,
 
 	private Notification buildDownloadNotification(App app, int progress,
 			int max) {
-		final NotificationCompat.Builder builder = new NotificationCompat.Builder(activity);
+		final NotificationCompat.Builder builder = new NotificationCompat.Builder(
+				activity);
 
 		if (firstPublish == null) {
 			firstPublish = new Date();
@@ -70,42 +71,49 @@ public class BlankStore implements BlankListener, InstallCallback,
 		builder.setContentInfo(Utils.niceSize(progress) + " / "
 				+ Utils.niceSize(max));
 		builder.setWhen(firstPublish.getTime());
-		builder.setContentIntent(PendingIntent.getActivity(activity, 0, new Intent(), 0));
+		builder.setContentIntent(PendingIntent.getActivity(activity, 0,
+				new Intent(), 0));
 
 		builder.setContentText(app.getTitle() + " " + app.getVersion());
 		return builder.build();
 	}
 
 	private Notification buildFailedNotification(App app) {
-		final NotificationCompat.Builder builder = new NotificationCompat.Builder(activity);
+		final NotificationCompat.Builder builder = new NotificationCompat.Builder(
+				activity);
 		builder.setAutoCancel(true);
 		builder.setContentTitle(activity
 				.getText(R.string.download_notify_failed));
 		builder.setSmallIcon(android.R.drawable.stat_notify_error);
 		builder.setContentText(app.getTitle() + " " + app.getVersion());
-		builder.setContentIntent(PendingIntent.getActivity(activity, 0, new Intent(), 0));
+		builder.setContentIntent(PendingIntent.getActivity(activity, 0,
+				new Intent(), 0));
 
 		return builder.build();
 	}
 
 	private Notification buildInstalledNotification(App app) {
-		final NotificationCompat.Builder builder = new NotificationCompat.Builder(activity);
+		final NotificationCompat.Builder builder = new NotificationCompat.Builder(
+				activity);
 		builder.setAutoCancel(true);
 		builder.setContentTitle(activity.getText(R.string.app_installed));
 		builder.setSmallIcon(R.drawable.stat_sys_install_complete);
 		builder.setContentText(app.getTitle() + " " + app.getVersion());
-		builder.setContentIntent(PendingIntent.getActivity(activity, 0, new Intent(), 0));
+		builder.setContentIntent(PendingIntent.getActivity(activity, 0,
+				new Intent(), 0));
 
 		return builder.build();
 	}
 
 	private Notification buildInstallingNotification(App app) {
-		final NotificationCompat.Builder builder = new NotificationCompat.Builder(activity);
+		final NotificationCompat.Builder builder = new NotificationCompat.Builder(
+				activity);
 		builder.setAutoCancel(true);
 		builder.setContentTitle(activity.getText(R.string.app_installing));
 		builder.setSmallIcon(android.R.drawable.stat_sys_download);
 		builder.setContentText(app.getTitle() + " " + app.getVersion());
-		builder.setContentIntent(PendingIntent.getActivity(activity, 0, new Intent(), 0));
+		builder.setContentIntent(PendingIntent.getActivity(activity, 0,
+				new Intent(), 0));
 
 		return builder.build();
 	}

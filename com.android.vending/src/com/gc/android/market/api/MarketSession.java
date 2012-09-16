@@ -459,6 +459,14 @@ public class MarketSession {
 		this.authSubToken = authSubToken;
 	}
 
+	public void setDeviceAndSdkVersion(String deviceAndSdkVersion) {
+		context.setDeviceAndSdkVersion(deviceAndSdkVersion);
+	}
+
+	public void setDeviceAndSdkVersion(String deviceName, int sdkVersion) {
+		setDeviceAndSdkVersion(deviceName + ":" + sdkVersion);
+	}
+
 	public void setIsSecure(Boolean isSecure) {
 		context.setIsSecure(isSecure);
 	}

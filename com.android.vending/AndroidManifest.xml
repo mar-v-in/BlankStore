@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.android.vending"
-    android:versionCode="0603"
-    android:versionName="0.6.3" >
+    android:versionCode="0605"
+    android:versionName="0.6.5" >
 
-    <uses-sdk android:minSdkVersion="10" />
+    <uses-sdk android:minSdkVersion="9" android:targetSdkVersion="16" />
 
     <permission
         android:name="com.android.vending.CHECK_LICENSE"
@@ -19,6 +19,7 @@
     <permission android:name="com.android.vending.billing.IN_APP_NOTIFY.permission.C2D_MESSAGE" />
     <permission android:name="com.android.vending.billing.BILLING_ACCOUNT_SERVICE" />
     <permission android:name="com.android.vending.billing.ADD_CREDIT_CARD" />
+    <permission android:name="com.android.vending.MANAGE_ACCOUNTS" />
 
     <uses-permission android:name="com.android.vending.billing.IN_APP_NOTIFY.permission.C2D_MESSAGE" />
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
@@ -49,6 +50,7 @@
     <uses-permission android:name="android.permission.STATUS_BAR" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETE" />
     <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT" />
+    <uses-permission android:name="com.android.vending.MANAGE_ACCOUNTS"/>
 
     <application
         android:icon="@drawable/ic_launcher"
@@ -56,6 +58,7 @@
         <service
             android:name=".account.AccountAuthenticatorService"
             android:exported="true"
+            android:permission="com.android.vending.MANAGE_ACCOUNTS"
             android:process=":auth" >
             <intent-filter>
                 <action android:name="android.accounts.AccountAuthenticator" />

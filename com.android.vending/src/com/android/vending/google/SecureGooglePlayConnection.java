@@ -30,20 +30,20 @@ public class SecureGooglePlayConnection extends GooglePlayConnection {
 
 	public SecureGooglePlayConnection(Account account) {
 		this(account.getLogin(), account.getPassword(), account.getAndroidId(),
-				account.getOperatorAlpha(), account.getOperatorNumeric());
+				account.getOperatorAlpha(), account.getOperatorNumeric(), account.getDeviceName(), account.getSdkVersion());
 	}
 
 	public SecureGooglePlayConnection(String email, String password,
 			String androidId, File cacheDir, String operatorAlpha,
-			String operatorNumeric) {
+			String operatorNumeric, String deviceName, int sdkVersion) {
 		super(email, password, androidId, cacheDir, operatorAlpha,
-				operatorNumeric);
+				operatorNumeric, deviceName, sdkVersion);
 	}
 
 	public SecureGooglePlayConnection(String email, String password,
-			String androidId, String operatorAlpha, String operatorNumeric) {
+			String androidId, String operatorAlpha, String operatorNumeric, String deviceName, int sdkVersion) {
 		this(email, password, androidId, DEFAULT_CACHE_DIR, operatorAlpha,
-				operatorNumeric);
+				operatorNumeric, deviceName, sdkVersion);
 	}
 
 	private File downloadPart(InstallAsset installAsset, File file,
