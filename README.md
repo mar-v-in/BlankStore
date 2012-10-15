@@ -1,10 +1,10 @@
 NOGAPPS-BlankStore
 ==================
 
-An open source Google Play Store client. Part of NOGAPPS Project.
+An open source Google Play Store client. Part of μg Project.
 
 ###License
-> Copyright 2012 NOGAPPS Project
+> Copyright 2012 μg Project Team
 
 > Licensed under the Apache License, Version 2.0 (the "License");
 > you may not use this file except in compliance with the License.
