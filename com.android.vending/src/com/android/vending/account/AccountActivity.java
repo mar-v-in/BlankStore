@@ -40,10 +40,13 @@ public class AccountActivity extends Activity implements OnClickListener {
 		setContentView(R.layout.account);
 		Account a = new Account(null, null, null);
 		final TelephonyManager telephonyManager = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
-		((EditText) findViewById(R.id.txt_opAlpha)).setText(a.getOperatorAlpha(this));
-		((EditText) findViewById(R.id.txt_opNum)).setText(a.getOperatorNumeric(this));
+		((EditText) findViewById(R.id.txt_opAlpha)).setText(a
+				.getOperatorAlpha(this));
+		((EditText) findViewById(R.id.txt_opNum)).setText(a
+				.getOperatorNumeric(this));
 		((EditText) findViewById(R.id.txt_devName)).setText(a.getDeviceName());
-		((EditText) findViewById(R.id.txt_sdkV)).setText(a.getSdkVersion());
+		((EditText) findViewById(R.id.txt_sdkV))
+				.setText(a.getSdkVersion() + "");
 		findViewById(R.id.btn_create_account).setOnClickListener(this);
 	}
 }
