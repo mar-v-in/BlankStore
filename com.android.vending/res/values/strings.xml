@@ -2,6 +2,7 @@
 <resources>
 
     <string name="app_name">Android Market</string>
+    <string name="launcher_name">Market</string>
     <string name="app_developer">μg Project Team</string>
     <string name="download_notify_title">Downloading…</string>
     <string name="download_notify_finished">Download Finished.</string>
