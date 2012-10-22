@@ -23,6 +23,10 @@ public class AccountActivity extends Activity implements OnClickListener {
 						.toString());
 		accountData.put(Account.ACCOUNT_DATA_KEY_OPERATORNUMERIC,
 				((EditText) findViewById(R.id.txt_opNum)).getText().toString());
+		accountData.put(Account.ACCOUNT_DATA_KEY_SDKVERSION,
+				((EditText) findViewById(R.id.txt_sdkV)).getText().toString());
+		accountData.put(Account.ACCOUNT_DATA_KEY_DEVICENAME,
+				((EditText) findViewById(R.id.txt_devName)).getText().toString());
 		final String login = ((EditText) findViewById(R.id.txt_login))
 				.getText().toString();
 		final String password = ((EditText) findViewById(R.id.txt_password))

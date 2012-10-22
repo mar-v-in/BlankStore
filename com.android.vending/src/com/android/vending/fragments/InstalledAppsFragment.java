@@ -96,9 +96,7 @@ public class InstalledAppsFragment extends BlankFragment implements
 		final List<PackageInfo> packages = pm.getInstalledPackages(0);
 		final List<String> packageNames = new ArrayList<String>();
 		for (final PackageInfo packageInfo : packages) {
-			if ((packageInfo.applicationInfo.flags & ApplicationInfo.FLAG_SYSTEM) == 0) {
 				packageNames.add(packageInfo.packageName);
-			}
 		}
 		((BlankActivity) getActivity()).getApps(packageNames, false);
 
