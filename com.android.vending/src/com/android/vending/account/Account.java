@@ -130,7 +130,7 @@ public class Account {
 		if (account == null || account.isEmpty()) {
 			final TelephonyManager telephonyManager = (TelephonyManager) context
 					.getSystemService(Context.TELEPHONY_SERVICE);
-			return telephonyManager.getNetworkOperatorName();
+			return telephonyManager.getSimOperatorName();
 		}
 		return account;
 	}
@@ -144,7 +144,7 @@ public class Account {
 		if (account == null || account.isEmpty()) {
 			final TelephonyManager telephonyManager = (TelephonyManager) context
 					.getSystemService(Context.TELEPHONY_SERVICE);
-			return telephonyManager.getNetworkOperator();
+			return telephonyManager.getSimOperator();
 		}
 		return account;
 	}

@@ -4,7 +4,6 @@ import java.util.HashMap;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.telephony.TelephonyManager;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
@@ -39,7 +38,6 @@ public class AccountActivity extends Activity implements OnClickListener {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.account);
 		Account a = new Account(null, null, null);
-		final TelephonyManager telephonyManager = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
 		((EditText) findViewById(R.id.txt_opAlpha)).setText(a
 				.getOperatorAlpha(this));
 		((EditText) findViewById(R.id.txt_opNum)).setText(a
