@@ -1,6 +1,9 @@
 package com.android.vending;
 
 import java.io.File;
+import java.lang.reflect.Method;
+import java.lang.SecurityException;
+import java.lang.reflect.InvocationTargetException;
 
 import android.content.Context;
 import android.content.pm.IPackageDeleteObserver;
@@ -26,6 +29,15 @@ public class BlankPackageInstaller {
 	public static final int INSTALL_FROM_ADB = 0x00000020;
 	public static final int INSTALL_ALL_USERS = 0x00000040;
 	public static final int INSTALL_ALLOW_DOWNGRADE = 0x00000080;
+
+	private Method mInstallPackageMethod;
+	private Method mDeletePackageMethod;
+	private boolean mReflectionSuccessful;
+	private boolean mReflectionDone = false;
+
+	public static final int RPC_SUCCESS = 0;
+	public static final int RPC_NO_PERMISSION = 1;
+	public static final int RPC_EXCEPTION = 2;
 
 	public interface InstallCallback {
 		void installDone(App app);
@@ -111,8 +123,76 @@ public class BlankPackageInstaller {
 		this.context = context;
 	}
 
+	public boolean checkPackageManagerMethods() {
+		if (mReflectionDone) {
+			return mReflectionSuccessful;
+		}
+
+		PackageManager pm = context.getPackageManager();
+		Method[] list = pm.getClass().getDeclaredMethods();
+		for (Method m: list) {
+			if (m.getName().equals("installPackage")) {
+				mInstallPackageMethod = m;
+			} else if (m.getName().equals("deletePackage")) {
+				mDeletePackageMethod = m;
+			}
+		}
+
+		if (mInstallPackageMethod != null && mDeletePackageMethod != null) {
+			mReflectionSuccessful = true;
+		} else {
+			mReflectionSuccessful = false;
+			Log.w(TAG, "Could not look up internal PackageManager APIs");
+		}
+
+		mReflectionDone = true;
+		return mReflectionSuccessful;
+	}
+
+	private int handleReflectException(String op, Throwable e) {
+		if (e instanceof InvocationTargetException) {
+			Throwable cause = e.getCause();
+			if (cause != null) {
+				e = cause;
+			}
+		}
+		if (e instanceof SecurityException) {
+			// this just means we're not a system app; non fatal.
+			// Normally InvocationTargetException is the first
+			// link of the exception chain.
+			Log.i(TAG, op + ": permission denied");
+			return RPC_NO_PERMISSION;
+		}
+		Log.e(TAG, op + ": caught exception", e);
+		return RPC_EXCEPTION;
+	}
+
+	private int callInstallPackage(final PackageManager pm, final Uri packageURI,
+			final IPackageInstallObserver observer, final int flags,
+			final String installerPackageName) {
+		try {
+			mInstallPackageMethod.invoke(pm, packageURI, observer, flags, installerPackageName);
+			return RPC_SUCCESS;
+		} catch (Exception e) {
+			return handleReflectException("installPackage", e);
+		}
+	}
+
+	private int callDeletePackage(final PackageManager pm, final String packageName,
+			final IPackageDeleteObserver observer, final int flags) {
+		try {
+			mDeletePackageMethod.invoke(pm, packageName, observer, flags);
+			return RPC_SUCCESS;
+		} catch (Exception e) {
+			return handleReflectException("deletePackage", e);
+		}
+	}
+
 	public void installPackage(App app, File file,
 			InstallCallback installCallback) {
+		if (checkPackageManagerMethods() == false) {
+			return;
+		}
 		if (!file.exists()) {
 			Log.d(TAG, "Could not install " + app.getPackageName()
 					+ "! File does not exist: " + file.getAbsolutePath());
@@ -133,8 +213,8 @@ public class BlankPackageInstaller {
 			Log.d(TAG, "Replacing package: " + app.getPackageName());
 		}
 		installCallback.installStarted(app);
-		pm.installPackage(Uri.fromFile(file), new InstallObserver(app,
-				installCallback), installFlags, PACKAGE_NAME);
+		callInstallPackage(pm, Uri.fromFile(file), new InstallObserver(app, installCallback),
+				installFlags, PACKAGE_NAME);
 	}
 
 	public void installPackage(App app, InstallCallback installCallback) {
@@ -144,11 +224,14 @@ public class BlankPackageInstaller {
 	}
 
 	public void uninstallPackage(App app, UninstallCallback uninstallCallback) {
+		if (checkPackageManagerMethods() == false) {
+			return;
+		}
 		final int uninstallFlags = 0;
 		final PackageManager pm = context.getPackageManager();
 		uninstallCallback.uninstallStarted(app);
-		pm.deletePackage(app.getPackageName(), new UninstallObserver(app,
-				uninstallCallback), uninstallFlags);
+		callDeletePackage(pm, app.getPackageName(),
+				new UninstallObserver(app, uninstallCallback), uninstallFlags);
 	}
 
 }
