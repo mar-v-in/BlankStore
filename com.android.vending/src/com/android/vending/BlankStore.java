@@ -10,6 +10,7 @@ import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.net.Uri;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
@@ -150,10 +151,22 @@ public class BlankStore implements BlankListener, InstallCallback,
 
 	@Override
 	public void onDownloadAppDone(App app, File file) {
-		getNotificationManager().notify(
-				app.getPackageName().hashCode() + activity.hashCode(),
-				buildInstallingNotification(app));
-		startInstallApp(app, file);
+		if (isPrivileged()) {
+			// direct install, if BlankStore is a system app
+			getNotificationManager().notify(
+					app.getPackageName().hashCode() + activity.hashCode(),
+					buildInstallingNotification(app));
+			startInstallApp(app, file);
+		} else {
+			// use the standard system dialog (manual confirmation)
+			getNotificationManager().cancel(
+					app.getPackageName().hashCode() + activity.hashCode());
+
+			Intent intent = new Intent(Intent.ACTION_VIEW);
+			intent.setDataAndType(Uri.fromFile(file),
+					"application/vnd.android.package-archive");
+			activity.startActivity(intent);
+		}
 	}
 
 	@Override
@@ -227,6 +240,10 @@ public class BlankStore implements BlankListener, InstallCallback,
 
 	public void startInstallApp(App app, File file) {
 		startInstallApp(app, file, this);
+	}
+
+	public boolean isPrivileged() {
+		return installer.checkPackageManagerMethods();
 	}
 
 	public void startInstallApp(App app, File file, InstallCallback callback) {
@@ -340,7 +357,13 @@ public class BlankStore implements BlankListener, InstallCallback,
 	}
 
 	public void startUninstallApp(App app, UninstallCallback callback) {
-		installer.uninstallPackage(app, callback);
+		if (isPrivileged()) {
+			installer.uninstallPackage(app, callback);
+		} else {
+			Intent intent = new Intent(Intent.ACTION_DELETE,
+					Uri.fromParts("package", app.getPackageName(), null));
+			activity.startActivity(intent);
+		}
 	}
 
 	@Override
