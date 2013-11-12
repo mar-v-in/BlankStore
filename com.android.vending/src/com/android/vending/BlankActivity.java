@@ -163,6 +163,15 @@ public class BlankActivity extends FragmentActivity implements BlankListener {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
 		fragmentManager = getSupportFragmentManager();
+		if (!showingFragment) {
+			goFragment(new StartFragment());
+		}
+		setVisibleTitle(R.string.apps);
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
 		if (!store.isReady()) {
 			final AccountManager accountManager = AccountManager
 					.getInstance(this);
@@ -181,7 +190,12 @@ public class BlankActivity extends FragmentActivity implements BlankListener {
 			}
 			if (accounts.size() == 0) {
 				Log.d("BlankActivity", "Need Account to work!");
-				finish();
+
+				Intent intent = new Intent();
+				intent.setClassName("com.android.vending",
+						"com.android.vending.account.AccountActivity");
+				startActivity(intent);
+				return;
 			}
 
 			Log.d("BlankActivity", "Accounts initialized.");
@@ -189,10 +203,6 @@ public class BlankActivity extends FragmentActivity implements BlankListener {
 			store.addListener(this);
 			Log.d("BlankActivity", "BlankStore initialized.");
 		}
-		if (!showingFragment) {
-			goFragment(new StartFragment());
-		}
-		setVisibleTitle(R.string.apps);
 	}
 
 	@Override
