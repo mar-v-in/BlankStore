@@ -17,6 +17,16 @@ import com.gc.android.market.api.model.Market.App;
 
 public class BlankPackageInstaller {
 
+	// internal flags from PackageManager.java
+	public static final int INSTALL_FORWARD_LOCK = 0x00000001;
+	public static final int INSTALL_REPLACE_EXISTING = 0x00000002;
+	public static final int INSTALL_ALLOW_TEST = 0x00000004;
+	public static final int INSTALL_EXTERNAL = 0x00000008;
+	public static final int INSTALL_INTERNAL = 0x00000010;
+	public static final int INSTALL_FROM_ADB = 0x00000020;
+	public static final int INSTALL_ALL_USERS = 0x00000040;
+	public static final int INSTALL_ALLOW_DOWNGRADE = 0x00000080;
+
 	public interface InstallCallback {
 		void installDone(App app);
 
@@ -115,11 +125,11 @@ public class BlankPackageInstaller {
 			final PackageInfo pi = pm.getPackageInfo(app.getPackageName(),
 					PackageManager.GET_UNINSTALLED_PACKAGES);
 			if (pi != null) {
-				installFlags |= PackageManager.INSTALL_REPLACE_EXISTING;
+				installFlags |= INSTALL_REPLACE_EXISTING;
 			}
 		} catch (final NameNotFoundException e) {
 		}
-		if ((installFlags & PackageManager.INSTALL_REPLACE_EXISTING) != 0) {
+		if ((installFlags & INSTALL_REPLACE_EXISTING) != 0) {
 			Log.d(TAG, "Replacing package: " + app.getPackageName());
 		}
 		installCallback.installStarted(app);
