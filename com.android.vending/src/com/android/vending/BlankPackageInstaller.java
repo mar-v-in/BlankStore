@@ -31,6 +31,7 @@ public class BlankPackageInstaller {
 	public static final int INSTALL_ALLOW_DOWNGRADE = 0x00000080;
 
 	private Method mInstallPackageMethod;
+	private Method mInstallExistingPackageMethod;
 	private Method mDeletePackageMethod;
 	private boolean mReflectionSuccessful;
 	private boolean mReflectionDone = false;
@@ -38,6 +39,7 @@ public class BlankPackageInstaller {
 	public static final int RPC_SUCCESS = 0;
 	public static final int RPC_NO_PERMISSION = 1;
 	public static final int RPC_EXCEPTION = 2;
+	public static final int RPC_NAMENOTFOUND = 2;
 
 	public interface InstallCallback {
 		void installDone(App app);
@@ -133,15 +135,25 @@ public class BlankPackageInstaller {
 		for (Method m: list) {
 			if (m.getName().equals("installPackage")) {
 				mInstallPackageMethod = m;
+			} else if (m.getName().equals("installExistingPackage")) {
+				mInstallExistingPackageMethod = m;
 			} else if (m.getName().equals("deletePackage")) {
 				mDeletePackageMethod = m;
 			}
 		}
 
-		if (mInstallPackageMethod != null && mDeletePackageMethod != null) {
+		mReflectionSuccessful = false;
+
+		// Perform a test call to check permissions.  Since the package
+		// name is empty, the service should return INSTALL_FAILED_INVALID_URI.
+		// If we don't have permission, callInstallExistingPackage() will return
+		// RPC_NO_PERMISSION to indicate that the service threw a SecurityException.
+		if (mInstallPackageMethod != null &&
+				mInstallExistingPackageMethod != null &&
+				mDeletePackageMethod != null &&
+				callInstallExistingPackage(pm, "") == RPC_NAMENOTFOUND) {
 			mReflectionSuccessful = true;
 		} else {
-			mReflectionSuccessful = false;
 			Log.w(TAG, "Could not look up internal PackageManager APIs");
 		}
 
@@ -155,6 +167,9 @@ public class BlankPackageInstaller {
 			if (cause != null) {
 				e = cause;
 			}
+		}
+		if (e instanceof NameNotFoundException) {
+			return RPC_NAMENOTFOUND;
 		}
 		if (e instanceof SecurityException) {
 			// this just means we're not a system app; non fatal.
@@ -175,6 +190,18 @@ public class BlankPackageInstaller {
 			return RPC_SUCCESS;
 		} catch (Exception e) {
 			return handleReflectException("installPackage", e);
+		}
+	}
+
+	private int callInstallExistingPackage(final PackageManager pm, final String packageName) {
+		try {
+			// FIXME: installPackage() and deletePackage() are void methods, but
+			// installExistingPackage() returns a status code.  We are ignoring it
+			// here.
+			mInstallExistingPackageMethod.invoke(pm, packageName);
+			return RPC_SUCCESS;
+		} catch (Exception e) {
+			return handleReflectException("installExistingPackage", e);
 		}
 	}
 
