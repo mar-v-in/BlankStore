@@ -3,6 +3,19 @@ NOGAPPS-BlankStore
 
 An open source Google Play Store client. Part of μg Project.
 
+###Build instructions
+
+Prerequisites:
+
+* Android SDK in your $PATH (both platform-tools/ and tools/ directories)
+* javac 1.6 and a recent version of Apache ant in your $PATH
+* Use the Android SDK Manager to install API 16
+
+Procedure:
+
+    android update project -p .
+    ant debug
+
 ###License
 > Copyright 2012 μg Project Team
 
