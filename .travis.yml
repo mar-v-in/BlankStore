@@ -14,6 +14,7 @@ before_install:
     - curl -L https://raw.github.com/embarkmobile/android-sdk-installer/master/android-sdk-installer | bash /dev/stdin --install=$COMPONENTS
     - source ~/.android-sdk-installer/env
     - cd com.android.vending
+    - cp $ANDROID_HOME/extras/android/support/v4/android-support-v4.jar libs/
     - android update project -p .
 
 script:
