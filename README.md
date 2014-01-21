@@ -13,6 +13,7 @@ Prerequisites:
 
 Procedure:
 
+    mkdir libs
     cp <sdk>/extras/android/support/v4/android-support-v4.jar libs/  # Or compile it yourself
     android update project -p .
     ant debug

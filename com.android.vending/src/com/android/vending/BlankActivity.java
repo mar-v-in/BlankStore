@@ -195,7 +195,8 @@ public class BlankActivity extends FragmentActivity implements BlankListener {
 				intent.setClassName("com.android.vending",
 						"com.android.vending.account.AccountActivity");
 				startActivity(intent);
-				return;
+				
+				finish();
 			}
 
 			Log.d("BlankActivity", "Accounts initialized.");
