@@ -7,10 +7,13 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
+import android.content.Intent;
 
 import com.android.vending.R;
 
 public class AccountActivity extends Activity implements OnClickListener {
+	Boolean StartOnFinish = false;
+	
 	@Override
 	public void onClick(View v) {
 		final AccountManager accountManager = AccountManager.getInstance(this);
@@ -34,6 +37,12 @@ public class AccountActivity extends Activity implements OnClickListener {
 		final Account account = new Account(login, password,
 				Account.Type.GooglePlay, accountData);
 		accountManager.addAccount(account);
+		if (StartOnFinish) {
+			Intent intent = new Intent();
+			intent.setClassName("com.android.vending",
+					"com.android.vending.BlankActivity");
+			startActivity(intent);
+		}
 		finish();
 	}
 
@@ -50,5 +59,10 @@ public class AccountActivity extends Activity implements OnClickListener {
 		((EditText) findViewById(R.id.txt_sdkV))
 				.setText(a.getSdkVersion() + "");
 		findViewById(R.id.btn_create_account).setOnClickListener(this);
+		
+		Bundle extras = getIntent().getExtras();
+		if (extras != null) {
+			StartOnFinish = Boolean.valueOf(extras.getString("StartOnFinish"));
+		}
 	}
 }
