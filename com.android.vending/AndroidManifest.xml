@@ -137,6 +137,8 @@
             android:logo="@drawable/play_logo_black"
             android:theme="@android:style/Theme.Holo" >
         </activity>
+
+	<meta-data android:name="fake-signature" android:value="@string/fake_signature" />
     </application>
 
 </manifest>
