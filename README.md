@@ -1,7 +1,8 @@
-NOGAPPS-BlankStore
-==================
+BlankStore [legacy]
+===================
 
 An open source Google Play Store client. Part of μg Project.
+Development on BlankStore was stopped. Latest commits are just maintenance fixes, don't expect too much :)
 
 ###Build instructions
 
@@ -19,7 +20,7 @@ Procedure:
     ant debug
 
 ###License
-> Copyright 2012 μg Project Team
+> Copyright 2012-2014 μg Project Team
 
 > Licensed under the Apache License, Version 2.0 (the "License");
 > you may not use this file except in compliance with the License.
