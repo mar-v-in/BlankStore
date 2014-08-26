@@ -12,13 +12,28 @@ import java.util.Date;
 
 import android.util.Log;
 
+import com.android.vending.BlankConnection;
 import com.android.vending.account.Account;
-import com.gc.android.market.api.model.Market.App;
-import com.gc.android.market.api.model.Market.GetAssetResponse.InstallAsset;
+import com.gc.android.market.api.model.Market;
+import com.google.android.AndroidAuth;
+import com.google.android.AndroidContext;
+import com.google.auth.AuthType;
+import com.google.auth.DataField;
+import com.google.play.DfeClient;
+import com.google.play.DfeContext;
+import com.google.play.DfeResponse;
+import com.google.play.proto.DeliveryResponse;
+import com.google.play.proto.DetailsResponse;
+import com.google.play.proto.PurchaseStatusResponse;
+import com.google.tools.RequestContext;
 
-public class SecureGooglePlayConnection extends GooglePlayConnection {
+public class SecureGooglePlayConnection extends BlankConnection {
 
-	public interface Listener {
+    public File getCacheDir() {
+        return cacheDir;
+    }
+
+    public interface Listener {
 
 		boolean isCancelled();
 
@@ -27,6 +42,11 @@ public class SecureGooglePlayConnection extends GooglePlayConnection {
 	}
 
 	private final static String TAG = "SecureGooglePlay";
+    private DfeClient client;
+    private DfeContext dfeContext;
+    private String password;
+    private String email;
+    private File cacheDir;
 
 	public SecureGooglePlayConnection(Account account) {
 		this(account.getLogin(), account.getPassword(), account.getAndroidId(),
@@ -36,29 +56,55 @@ public class SecureGooglePlayConnection extends GooglePlayConnection {
 	public SecureGooglePlayConnection(String email, String password,
 			String androidId, File cacheDir, String operatorAlpha,
 			String operatorNumeric, String deviceName, int sdkVersion) {
-		super(email, password, androidId, cacheDir, operatorAlpha,
-				operatorNumeric, deviceName, sdkVersion);
+        RequestContext info = new RequestContext();
+        info.put(RequestContext.KEY_ANDROID_ID_HEX, androidId);
+        info.put(RequestContext.KEY_CELL_OPERATOR_NUMERIC, operatorNumeric);
+        info.put(RequestContext.KEY_CLIENT_ID, "am-google");
+        info.put(RequestContext.KEY_FILTER_LEVEL, 3);
+        info.put(RequestContext.KEY_HTTP_USER_AGENT,
+                "Android-Finsky/4.0.25 (api=3,versionCode=80200025,sdk="+sdkVersion+",device="+ deviceName+",hardware="+deviceName+",product=occam)");
+        info.put(RequestContext.KEY_LOGGING_ID, "");
+        info.put(RequestContext.KEY_SMALEST_SCREEN_WIDTH_DP, 384);
+        dfeContext = new DfeContext(info);
+        client = new DfeClient(dfeContext);
+        this.cacheDir = cacheDir;
+        this.email = email;
+        this.password = password;
 	}
 
-	public SecureGooglePlayConnection(String email, String password,
+    private synchronized DfeClient getClient() {
+        if (!dfeContext.containsKey(RequestContext.KEY_AUTHORIZATION_TOKEN)) {
+            String authToken = new AndroidAuth()
+                    .getAuthTokenResponse(AndroidContext.randomGalaxyNexus().setEmail(email), password,
+                            "androidmarket", "com.android.vending", "10321bd893f69af97f7573aafe9de1dc0901f3a1",
+                            false, AuthType.Password).getData(DataField.AUTH_TOKEN);
+            dfeContext.put(RequestContext.KEY_AUTHORIZATION_TOKEN, authToken);
+        }
+        return client;
+    }
+
+    public SecureGooglePlayConnection(String email, String password,
 			String androidId, String operatorAlpha, String operatorNumeric, String deviceName, int sdkVersion) {
-		this(email, password, androidId, DEFAULT_CACHE_DIR, operatorAlpha,
+		this(email, password, androidId, GooglePlayConnection.DEFAULT_CACHE_DIR, operatorAlpha,
 				operatorNumeric, deviceName, sdkVersion);
 	}
 
-	private File downloadPart(InstallAsset installAsset, File file,
+	private File downloadPart(Market.GetAssetResponse.InstallAsset installAsset, File file,
 			SecureGooglePlayConnection.Listener listener, int originalSize) {
 		final File part = new File(file.getAbsolutePath() + ".part");
 		if (originalSize == 0 && part.exists()) {
 			part.delete();
 		}
 		int downloadedSize = (int) part.length();
-		final HttpURLConnection conn = setupConnectionForDownload(installAsset,
-				downloadedSize);
+		HttpURLConnection conn = setupConnectionForDownload(installAsset,
+        			downloadedSize);
+
 		InputStream inputstream = null;
 		BufferedOutputStream stream = null;
 		try {
-			inputstream = conn.getInputStream();
+                        final ConnResult connRes = openConnectionCheckRedirects(conn);
+                        inputstream = connRes.getIs();
+                        conn = connRes.getConn();
 			stream = new BufferedOutputStream(new FileOutputStream(part, true));
 			final int totalSize = downloadedSize
 					+ (int) ((conn.getContentLength() != -1) ? conn
@@ -117,12 +163,29 @@ public class SecureGooglePlayConnection extends GooglePlayConnection {
 		}
 	}
 
-	private InstallAsset getInstallAssetSynced(String packageName) {
-		if (!isReadySynced()) {
-			openConnectionSynced();
-		}
-		return getSessionSynced().queryGetAssetRequest(packageName)
-				.getInstallAsset(0);
+	private Market.GetAssetResponse.InstallAsset getInstallAssetSynced(String packageName) {
+        DfeClient client = getClient();
+        DfeResponse<DetailsResponse> response = client.requestDetails(packageName);
+        System.out.println(response);
+        DfeResponse<DeliveryResponse> deliveryResponse =
+                client.requestDeliver(response.getResponse().docV2.docid,
+                        response.getResponse().docV2.details.appDetails.versionCode);
+        System.out.println(deliveryResponse);
+        if (deliveryResponse.getResponse() == null || deliveryResponse.getResponse().status != null && deliveryResponse.getResponse().status == 3) {
+            DfeResponse<PurchaseStatusResponse> purchaseStatusResponse =
+                    client.requestPurchase(response.getResponse().docV2.docid,
+                            response.getResponse().docV2.details.appDetails.versionCode);
+            System.out.println(purchaseStatusResponse);
+            deliveryResponse = client.requestDeliver(response.getResponse().docV2.docid,
+                    response.getResponse().docV2.details.appDetails.versionCode);
+        }
+        System.out.println(deliveryResponse);
+        return Market.GetAssetResponse.InstallAsset.newBuilder()
+                .setBlobUrl(deliveryResponse.getResponse().appDeliveryData.downloadUrl)
+                .setDownloadAuthCookieName(deliveryResponse.getResponse().appDeliveryData.downloadAuthCookie.get(0).name)
+                .setDownloadAuthCookieValue(deliveryResponse.getResponse().appDeliveryData.downloadAuthCookie.get(0).value)
+                .setVersionCode(response.getResponse().docV2.details.appDetails.versionCode)
+                .setAssetSize(deliveryResponse.getResponse().appDeliveryData.downloadSize).build();
 	}
 
 	@Override
@@ -130,34 +193,38 @@ public class SecureGooglePlayConnection extends GooglePlayConnection {
 		return true;
 	}
 
-	@Override
-	boolean isSecure() {
-		return true;
-	}
+    @Override
+    public File queryAppDownload(Market.App app,
+                                 SecureGooglePlayConnection.Listener listener) {
+        Log.d(TAG, "appDownload: " + app.getPackageName());
+        final File dir = new File(getCacheDir(), app.getPackageName());
+        makeDirectoryReady(dir);
+        File file = new File(dir, "APP-" + app.getVersionCode() + ".apk");
+        if (file.exists()) {
+            return file;
+        }
+        Market.GetAssetResponse.InstallAsset installAsset = getInstallAssetSynced(app.getPackageName());
+        file = new File(dir, "APP-" + installAsset.getVersionCode() + ".apk");
+        if (file.exists()) {
+            return file;
+        }
+        return downloadPart(installAsset, file, listener, 0);
+    }
 
-	@Override
-	public File queryAppDownload(App app,
-			SecureGooglePlayConnection.Listener listener) {
-		Log.d(TAG, "appDownload: " + app.getPackageName());
-		final File dir = new File(getCacheDir(), app.getPackageName());
-		makeDirectoryReady(dir);
-		File file = new File(dir, "APP-" + app.getVersionCode() + ".apk");
-		if (file.exists()) {
-			return file;
-		}
-		InstallAsset installAsset;
-		synchronized (getSessionSync()) {
-			installAsset = getInstallAssetSynced(app.getPackageName());
-		}
-		file = new File(dir, "APP-" + installAsset.getVersionCode() + ".apk");
-		if (file.exists()) {
-			return file;
-		}
-		return downloadPart(installAsset, file, listener, 0);
-	}
+    void makeDirectoryReady(File dir) {
+        if (!dir.exists()) {
+            dir.mkdirs();
+        }
+        if (!dir.exists()) {
+            throw new RuntimeException("could not init " + dir + "!");
+        }
+        if (dir.isFile()) {
+            throw new RuntimeException(dir + " must not be a file!");
+        }
+    }
 
-	private HttpURLConnection setupConnectionForDownload(
-			InstallAsset installAsset, int downloadedSize) {
+    private HttpURLConnection setupConnectionForDownload(
+			Market.GetAssetResponse.InstallAsset installAsset, int downloadedSize) {
 		try {
 			final HttpURLConnection conn = (HttpURLConnection) new URL(
 					installAsset.getBlobUrl()).openConnection();
@@ -166,7 +233,7 @@ public class SecureGooglePlayConnection extends GooglePlayConnection {
 					"Android-Market/2 (sapphire PLAT-RC33); gzip");
 			conn.setRequestProperty("Cookie",
 					installAsset.getDownloadAuthCookieName() + "="
-							+ installAsset.getDownloadAuthCookieValue());
+							+ installAsset.getDownloadAuthCookieValue()) ;
 			if (downloadedSize > 0) {
 				conn.setRequestProperty("Range", "bytes=" + downloadedSize
 						+ "-");
@@ -178,4 +245,68 @@ public class SecureGooglePlayConnection extends GooglePlayConnection {
 		}
 	}
 
+    private ConnResult openConnectionCheckRedirects(HttpURLConnection c) throws IOException {
+        boolean redir;
+        int redirects = 0;
+        InputStream in = null;
+
+        final String rMethod = c.getRequestMethod();
+        final String rPropUa = c.getRequestProperty("User-Agent");
+        final String rPropCo = c.getRequestProperty("Cookie");
+        do {
+            c.setInstanceFollowRedirects(false);
+            // We want to open the input stream before getting headers
+            // because getHeaderField() et al swallow IOExceptions.
+            in = c.getInputStream();
+            redir = false;
+            HttpURLConnection http = c;
+            int stat = http.getResponseCode();
+            if (stat >= 300 && stat <= 307 && stat != 306
+                    && stat != HttpURLConnection.HTTP_NOT_MODIFIED) {
+                Log.d(TAG, "openConnection: Redirecting!");
+                URL base = http.getURL();
+                String loc = http.getHeaderField("Location");
+                 Log.d(TAG, "openConnection: Loc: " + loc);
+                URL target = null;
+                if (loc != null) {
+                    target = new URL(base, loc);
+}
+                http.disconnect();
+                // Redirection should be allowed only for HTTP and HTTPS
+                // and should be limited to 5 redirections at most.
+                if (target == null || !(target.getProtocol().equals("http")
+                        || target.getProtocol().equals("https"))
+                        || redirects >= 5) {
+                    throw new SecurityException("illegal URL redirect");
+                }
+                redir = true;
+                c = (HttpURLConnection) target.openConnection();
+                c.setRequestMethod(rMethod);
+                c.setRequestProperty("User-Agent", rPropUa);
+                c.setRequestProperty("Cookie", rPropCo);
+                redirects++;
+            }
+        } while (redir);
+        return new ConnResult(in,c);
+    }
+
+    final class ConnResult {
+
+        private final InputStream is;
+        private final HttpURLConnection conn;
+
+        public ConnResult(InputStream is, HttpURLConnection conn) {
+            this.is = is;
+            this.conn = conn;
+        }
+
+        public InputStream getIs() {
+            return is;
+        }
+
+        public HttpURLConnection getConn() {
+            return conn;
+        }
+
+    }
 }
