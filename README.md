@@ -19,6 +19,10 @@ Procedure:
     android update project -p .
     ant debug
 
+###Credits
+
+Thanks to @cernekee for adding some nice features and @mid-kid for fixing stuff.
+
 ###License
 > Copyright 2012-2014 μg Project Team
 
