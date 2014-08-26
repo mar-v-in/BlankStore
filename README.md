@@ -16,6 +16,8 @@ Procedure:
 
     mkdir libs
     cp <sdk>/extras/android/support/v4/android-support-v4.jar libs/  # Or compile it yourself
+    curl "http://search.maven.org/remotecontent?filepath=com/squareup/okio/okio/1.0.0/okio-1.0.0.jar" -o libs/okio-1.0.0.jar # Or compile it yourself
+    curl "http://search.maven.org/remotecontent?filepath=com/squareup/wire/wire-runtime/1.5.1/wire-runtime-1.5.1.jar" -o libs/wire-runtime-1.5.1.jar
     android update project -p .
     ant debug
 
