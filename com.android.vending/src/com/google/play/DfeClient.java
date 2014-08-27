@@ -141,17 +141,17 @@ public class DfeClient extends Client {
 	}
 
 	// untested
-	public DfeResponse<PurchaseStatusResponse> requestPurchase(String docId, int versionCode) {
+	public DfeResponse<BuyResponse> requestPurchase(String docId, int versionCode) {
 		return requestPurchase(docId, 1, versionCode);
 	}
 
 	// untested
-	public DfeResponse<PurchaseStatusResponse> requestPurchase(String docId, int ot, int versionCode) {
-		DfeResponse<PurchaseStatusResponse> response =
+	public DfeResponse<BuyResponse> requestPurchase(String docId, int ot, int versionCode) {
+		DfeResponse<BuyResponse> response =
 				simplePostRequest(PURCHASE_URL, REQUEST_CONTENT_TYPE_FORM, ("ot=" + ot + "&doc=" + docId +
 																			"&vc=" + versionCode + "&").getBytes());
 		if (response.hasWrapperPayload())
-			response.setResponse(response.getWrapper().payload.purchaseStatusResponse);
+			response.setResponse(response.getWrapper().payload.buyResponse);
 		return response;
 	}
 
@@ -195,10 +195,11 @@ public class DfeClient extends Client {
 		if (DEBUG)
 			System.out.println("GET " + url);
 		HttpURLConnection connection = null;
+        byte[] bytes = null;
 		try {
 			connection = (HttpURLConnection) new URL(url).openConnection();
 			prepareConnection(connection, null);
-			byte[] bytes = readData(connection, false);
+			bytes = readData(connection, false);
 			ResponseWrapper wrapper = new Wire().parseFrom(bytes, ResponseWrapper.class);
 			return new DfeResponse<T>(wrapper, connection.getResponseCode(), connection.getResponseMessage());
 		} catch (Throwable e) {
@@ -215,15 +216,23 @@ public class DfeClient extends Client {
 	private <T> DfeResponse<T> simplePostRequest(String url, String postType, byte[] data) {
 		if (DEBUG)
 			System.out.println("POST " + url);
+        HttpURLConnection connection = null;
+        byte[] bytes = null;
 		try {
-			HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
+			connection = (HttpURLConnection) new URL(url).openConnection();
 			prepareConnection(connection, postType);
 			writeData(connection, data, false);
-			byte[] bytes = readData(connection, false);
+			bytes = readData(connection, false);
             ResponseWrapper wrapper = new Wire().parseFrom(bytes, ResponseWrapper.class);
 			return new DfeResponse<T>(wrapper, connection.getResponseCode(), connection.getResponseMessage());
 		} catch (Throwable e) {
-			return new DfeResponse<T>(e);
+            if (connection != null) {
+                try {
+                    return new DfeResponse<T>(connection.getResponseCode(), connection.getResponseMessage(), e);
+                } catch (IOException ignored) {
+                }
+            }
+            return new DfeResponse<T>(e);
 		}
 	}
 

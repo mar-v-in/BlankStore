@@ -5,38 +5,22 @@ package com.google.play.proto;
 import com.squareup.wire.Message;
 import com.squareup.wire.ProtoField;
 
-import static com.squareup.wire.Message.Datatype.STRING;
-
 public final class DetailsResponse extends Message {
 
-  public static final String DEFAULT_ANALYTICSCOOKIE = "";
-  public static final String DEFAULT_FOOTERHTML = "";
-
-  @ProtoField(tag = 1)
-  public final DocV1 docV1;
-
-  @ProtoField(tag = 2, type = STRING)
-  public final String analyticsCookie;
-
-  @ProtoField(tag = 3)
-  public final Review userReview;
-
+  /**
+   * optional DocV1 docV1 = 1;
+   * optional string analyticsCookie = 2;
+   * optional Review userReview = 3;
+   */
   @ProtoField(tag = 4)
   public final DocV2 docV2;
 
-  @ProtoField(tag = 5, type = STRING)
-  public final String footerHtml;
-
-  public DetailsResponse(DocV1 docV1, String analyticsCookie, Review userReview, DocV2 docV2, String footerHtml) {
-    this.docV1 = docV1;
-    this.analyticsCookie = analyticsCookie;
-    this.userReview = userReview;
+  public DetailsResponse(DocV2 docV2) {
     this.docV2 = docV2;
-    this.footerHtml = footerHtml;
   }
 
   private DetailsResponse(Builder builder) {
-    this(builder.docV1, builder.analyticsCookie, builder.userReview, builder.docV2, builder.footerHtml);
+    this(builder.docV2);
     setBuilder(builder);
   }
 
@@ -44,35 +28,18 @@ public final class DetailsResponse extends Message {
   public boolean equals(Object other) {
     if (other == this) return true;
     if (!(other instanceof DetailsResponse)) return false;
-    DetailsResponse o = (DetailsResponse) other;
-    return equals(docV1, o.docV1)
-        && equals(analyticsCookie, o.analyticsCookie)
-        && equals(userReview, o.userReview)
-        && equals(docV2, o.docV2)
-        && equals(footerHtml, o.footerHtml);
+    return equals(docV2, ((DetailsResponse) other).docV2);
   }
 
   @Override
   public int hashCode() {
     int result = hashCode;
-    if (result == 0) {
-      result = docV1 != null ? docV1.hashCode() : 0;
-      result = result * 37 + (analyticsCookie != null ? analyticsCookie.hashCode() : 0);
-      result = result * 37 + (userReview != null ? userReview.hashCode() : 0);
-      result = result * 37 + (docV2 != null ? docV2.hashCode() : 0);
-      result = result * 37 + (footerHtml != null ? footerHtml.hashCode() : 0);
-      hashCode = result;
-    }
-    return result;
+    return result != 0 ? result : (hashCode = docV2 != null ? docV2.hashCode() : 0);
   }
 
   public static final class Builder extends Message.Builder<DetailsResponse> {
 
-    public DocV1 docV1;
-    public String analyticsCookie;
-    public Review userReview;
     public DocV2 docV2;
-    public String footerHtml;
 
     public Builder() {
     }
@@ -80,35 +47,16 @@ public final class DetailsResponse extends Message {
     public Builder(DetailsResponse message) {
       super(message);
       if (message == null) return;
-      this.docV1 = message.docV1;
-      this.analyticsCookie = message.analyticsCookie;
-      this.userReview = message.userReview;
       this.docV2 = message.docV2;
-      this.footerHtml = message.footerHtml;
     }
 
-    public Builder docV1(DocV1 docV1) {
-      this.docV1 = docV1;
-      return this;
-    }
-
-    public Builder analyticsCookie(String analyticsCookie) {
-      this.analyticsCookie = analyticsCookie;
-      return this;
-    }
-
-    public Builder userReview(Review userReview) {
-      this.userReview = userReview;
-      return this;
-    }
-
+    /**
+     * optional DocV1 docV1 = 1;
+     * optional string analyticsCookie = 2;
+     * optional Review userReview = 3;
+     */
     public Builder docV2(DocV2 docV2) {
       this.docV2 = docV2;
-      return this;
-    }
-
-    public Builder footerHtml(String footerHtml) {
-      this.footerHtml = footerHtml;
       return this;
     }
 
