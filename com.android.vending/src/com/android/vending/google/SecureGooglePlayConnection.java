@@ -165,17 +165,14 @@ public class SecureGooglePlayConnection extends BlankConnection {
         DfeClient client = getClient();
         DfeClient.DEBUG = true;
         DfeResponse<DetailsResponse> response = client.requestDetails(packageName);
-        System.out.println(response);
         DfeResponse<DeliveryResponse> deliveryResponse =
                 client.requestDeliver(response.getResponse().docV2.docid,
                         response.getResponse().docV2.details.appDetails.versionCode);
-        System.out.println(deliveryResponse);
         AndroidAppDeliveryData appDeliveryData;
         if (deliveryResponse.getResponse() == null || deliveryResponse.getResponse().status != null && deliveryResponse.getResponse().status == 3) {
             DfeResponse<BuyResponse> buyResponse =
                     client.requestPurchase(response.getResponse().docV2.docid,
                             response.getResponse().docV2.details.appDetails.versionCode);
-            System.out.println(buyResponse);
             if (buyResponse.getResponse() != null && buyResponse.getResponse().purchaseStatusResponse != null && buyResponse.getResponse().purchaseStatusResponse.appDeliveryData != null) {
                 appDeliveryData = buyResponse.getResponse().purchaseStatusResponse.appDeliveryData;
             } else {
@@ -191,10 +188,10 @@ public class SecureGooglePlayConnection extends BlankConnection {
         }
         return Market.GetAssetResponse.InstallAsset.newBuilder()
                 .setBlobUrl(appDeliveryData.downloadUrl)
-                .setDownloadAuthCookieName(deliveryResponse.getResponse().appDeliveryData.downloadAuthCookie.get(0).name)
-                .setDownloadAuthCookieValue(deliveryResponse.getResponse().appDeliveryData.downloadAuthCookie.get(0).value)
+                .setDownloadAuthCookieName(appDeliveryData.downloadAuthCookie.get(0).name)
+                .setDownloadAuthCookieValue(appDeliveryData.downloadAuthCookie.get(0).value)
                 .setVersionCode(response.getResponse().docV2.details.appDetails.versionCode)
-                .setAssetSize(deliveryResponse.getResponse().appDeliveryData.downloadSize).build();
+                .setAssetSize(appDeliveryData.downloadSize).build();
 	}
 
 	@Override
