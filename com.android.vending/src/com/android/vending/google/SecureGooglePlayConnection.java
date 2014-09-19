@@ -164,34 +164,34 @@ public class SecureGooglePlayConnection extends BlankConnection {
 	private Market.GetAssetResponse.InstallAsset getInstallAssetSynced(String packageName) {
         DfeClient client = getClient();
         DfeClient.DEBUG = true;
-        DfeResponse<DetailsResponse> response = client.requestDetails(packageName);
-        DfeResponse<DeliveryResponse> deliveryResponse =
-                client.requestDeliver(response.getResponse().docV2.docid,
-                        response.getResponse().docV2.details.appDetails.versionCode);
-        AndroidAppDeliveryData appDeliveryData;
-        if (deliveryResponse.getResponse() == null || deliveryResponse.getResponse().status != null && deliveryResponse.getResponse().status == 3) {
-            DfeResponse<BuyResponse> buyResponse =
-                    client.requestPurchase(response.getResponse().docV2.docid,
-                            response.getResponse().docV2.details.appDetails.versionCode);
-            if (buyResponse.getResponse() != null && buyResponse.getResponse().purchaseStatusResponse != null && buyResponse.getResponse().purchaseStatusResponse.appDeliveryData != null) {
-                appDeliveryData = buyResponse.getResponse().purchaseStatusResponse.appDeliveryData;
+        DfeResponse<Documents.DetailsResponse> response = client.requestDetails(packageName);
+        DfeResponse<Unsorted.DeliveryResponse> deliveryResponse =
+                client.requestDeliver(response.getResponse().getDocV2().getDocid(),
+                        response.getResponse().getDocV2().getDetails().getAppDetails().getVersionCode());
+        Download.AndroidAppDeliveryData appDeliveryData;
+        if (deliveryResponse.getResponse() == null || deliveryResponse.getResponse().getStatus() == 3) {
+            DfeResponse<Purchase.PurchaseStatusResponse> buyResponse =
+                    client.requestPurchase(response.getResponse().getDocV2().getDocid(),
+                            response.getResponse().getDocV2().getDetails().getAppDetails().getVersionCode());
+            if (buyResponse.getResponse() != null && buyResponse.getResponse().getAppDeliveryData() != null) {
+                appDeliveryData = buyResponse.getResponse().getAppDeliveryData();
             } else {
-                deliveryResponse = client.requestDeliver(response.getResponse().docV2.docid,
-                        response.getResponse().docV2.details.appDetails.versionCode);
-                appDeliveryData = deliveryResponse.getResponse().appDeliveryData;
+                deliveryResponse = client.requestDeliver(response.getResponse().getDocV2().getDocid(),
+                        response.getResponse().getDocV2().getDetails().getAppDetails().getVersionCode());
+                appDeliveryData = deliveryResponse.getResponse().getAppDeliveryData();
             }
         } else {
-            appDeliveryData = deliveryResponse.getResponse().appDeliveryData;
+            appDeliveryData = deliveryResponse.getResponse().getAppDeliveryData();
         }
         if (appDeliveryData == null) {
             throw new RuntimeException("No app data!");
         }
         return Market.GetAssetResponse.InstallAsset.newBuilder()
-                .setBlobUrl(appDeliveryData.downloadUrl)
-                .setDownloadAuthCookieName(appDeliveryData.downloadAuthCookie.get(0).name)
-                .setDownloadAuthCookieValue(appDeliveryData.downloadAuthCookie.get(0).value)
-                .setVersionCode(response.getResponse().docV2.details.appDetails.versionCode)
-                .setAssetSize(appDeliveryData.downloadSize).build();
+                .setBlobUrl(appDeliveryData.getDownloadUrl())
+                .setDownloadAuthCookieName(appDeliveryData.getDownloadAuthCookie(0).getName())
+                .setDownloadAuthCookieValue(appDeliveryData.getDownloadAuthCookie(0).getValue())
+                .setVersionCode(response.getResponse().getDocV2().getDetails().getAppDetails().getVersionCode())
+                .setAssetSize(appDeliveryData.getDownloadSize()).build();
 	}
 
 	@Override
