@@ -67,6 +67,13 @@
                 android:resource="@xml/authenticator" />
         </service>
 
+        <service android:name="com.android.vending.licensing.LicensingService"
+                 android:permission="com.android.vending.CHECK_LICENSE">
+            <intent-filter>
+                <action android:name="com.android.vending.licensing.ILicensingService" />
+            </intent-filter>
+        </service>
+
         <activity
             android:name=".BlankActivity"
             android:label="@string/launcher_name"
