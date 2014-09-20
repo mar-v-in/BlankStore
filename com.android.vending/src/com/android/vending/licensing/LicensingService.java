@@ -4,9 +4,7 @@ import java.util.List;
 
 import android.util.Log;
 import android.app.Service;
-import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.os.IBinder;
 import android.os.RemoteException;
 
@@ -17,18 +15,16 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import com.android.vending.account.Account;
 import com.android.vending.account.AccountManager;
 
-import com.android.vending.licensing.ILicensingService;
-import com.android.vending.licensing.ILicenseResultListener;
-
 import com.google.android.AndroidContext;
-import com.google.android.AndroidVending;
 
 import com.gc.android.market.api.MarketSession;
+import com.google.play.VendingClient;
+import com.google.tools.RequestContext;
 
 public class LicensingService extends Service {
     private static final String TAG = LicensingService.class.getName();
     private Account account;
-    protected AndroidVending androidVending;
+    protected VendingClient client;
     protected String authToken;
 
     @Override
@@ -49,9 +45,12 @@ public class LicensingService extends Service {
 
         if (account != null)
         {
-            AndroidContext androidContext = AndroidContext.baseGalaxyS3().setAndroidId(account.getAndroidId()).setOperator(account.getOperatorAlpha(), account.getOperatorNumeric()).setBuildSdkVersion(account.getSdkVersion()).setBuildDevice(account.getDeviceName());
+            RequestContext androidContext = AndroidContext.baseDevice()
+                    .set(VendingClient.KEY_ANDROID_ID_HEX, account.getAndroidId())
+                    .set(VendingClient.KEY_SDK_VERSION, account.getSdkVersion())
+                    .set(VendingClient.KEY_BUILD_DEVICE, account.getDeviceName());
 
-            this.androidVending = new AndroidVending(androidContext);
+            this.client = new VendingClient(androidContext);
             this.authToken = null;
         }
     }
@@ -95,13 +94,14 @@ public class LicensingService extends Service {
 
             if (authToken == null)
             {
-                MarketSession session = new MarketSession(false); //TODO
+                MarketSession session = new MarketSession(true); //TODO
                 session.login(account.getLogin(), account.getPassword(), account.getAndroidId());
                 authToken = session.getAuthSubToken();
             }
             Log.d(TAG, "authToken: " + authToken);
 
-            androidVending.checkLicenseRequest("androidsecure" /* TODO: really? */, authToken, packageName, versionCode, nonce);
+            client.DEBUG = true;
+            client.checkLicenseRequest("androidsecure" /* TODO: really? */, authToken, packageName, versionCode, nonce);
 
             listener.verifyLicense(0x101, null, null); // TODO: for now, just pretend we didn't manage to connect
         }

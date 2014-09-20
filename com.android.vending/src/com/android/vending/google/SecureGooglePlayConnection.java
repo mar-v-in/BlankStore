@@ -20,7 +20,6 @@ import com.google.android.AndroidContext;
 import com.google.auth.AuthType;
 import com.google.auth.DataField;
 import com.google.play.DfeClient;
-import com.google.play.DfeContext;
 import com.google.play.DfeResponse;
 import com.google.play.proto.*;
 import com.google.tools.RequestContext;
@@ -41,7 +40,7 @@ public class SecureGooglePlayConnection extends BlankConnection {
 
 	private final static String TAG = "SecureGooglePlay";
     private DfeClient client;
-    private DfeContext dfeContext;
+    private RequestContext dfeContext;
     private String password;
     private String email;
     private File cacheDir;
@@ -54,16 +53,15 @@ public class SecureGooglePlayConnection extends BlankConnection {
 	public SecureGooglePlayConnection(String email, String password,
 			String androidId, File cacheDir, String operatorAlpha,
 			String operatorNumeric, String deviceName, int sdkVersion) {
-        RequestContext info = new RequestContext();
-        info.put(RequestContext.KEY_ANDROID_ID_HEX, androidId);
-        info.put(RequestContext.KEY_CELL_OPERATOR_NUMERIC, operatorNumeric);
-        info.put(RequestContext.KEY_CLIENT_ID, "am-google");
-        info.put(RequestContext.KEY_FILTER_LEVEL, 3);
-        info.put(RequestContext.KEY_HTTP_USER_AGENT,
-                "Android-Finsky/4.0.25 (api=3,versionCode=80200025,sdk="+sdkVersion+",device="+ deviceName+",hardware="+deviceName+",product=occam)");
-        info.put(RequestContext.KEY_LOGGING_ID, "");
-        info.put(RequestContext.KEY_SMALEST_SCREEN_WIDTH_DP, 384);
-        dfeContext = new DfeContext(info);
+        dfeContext = new RequestContext();
+        dfeContext.set(DfeClient.KEY_ANDROID_ID_HEX, androidId);
+        dfeContext.set(DfeClient.KEY_CELL_OPERATOR_NUMERIC, operatorNumeric);
+        dfeContext.set(DfeClient.KEY_CLIENT_ID, "am-google");
+        dfeContext.set(DfeClient.KEY_FILTER_LEVEL, 3);
+        dfeContext.set(DfeClient.KEY_HTTP_USER_AGENT,
+                "Android-Finsky/4.0.25 (api=3,versionCode=80200025,sdk=" + sdkVersion + ",device=" + deviceName + ",hardware=" + deviceName + ",product=occam)");
+        dfeContext.set(DfeClient.KEY_LOGGING_ID, "");
+        dfeContext.set(DfeClient.KEY_SMALEST_SCREEN_WIDTH_DP, 384);
         client = new DfeClient(dfeContext);
         this.cacheDir = cacheDir;
         this.email = email;
@@ -71,12 +69,12 @@ public class SecureGooglePlayConnection extends BlankConnection {
 	}
 
     private synchronized DfeClient getClient() {
-        if (!dfeContext.containsKey(RequestContext.KEY_AUTHORIZATION_TOKEN)) {
+        if (dfeContext.getString(DfeClient.KEY_AUTHORIZATION_TOKEN) == null) {
             String authToken = new AndroidAuth()
-                    .getAuthTokenResponse(AndroidContext.randomGalaxyNexus().setEmail(email), password,
+                    .getAuthTokenResponse(AndroidContext.baseDevice().setEmail(email), password,
                             "androidmarket", "com.android.vending", "10321bd893f69af97f7573aafe9de1dc0901f3a1",
                             false, AuthType.Password).getData(DataField.AUTH_TOKEN);
-            dfeContext.put(RequestContext.KEY_AUTHORIZATION_TOKEN, authToken);
+            dfeContext.set(DfeClient.KEY_AUTHORIZATION_TOKEN, authToken);
         }
         return client;
     }
@@ -164,34 +162,35 @@ public class SecureGooglePlayConnection extends BlankConnection {
 	private Market.GetAssetResponse.InstallAsset getInstallAssetSynced(String packageName) {
         DfeClient client = getClient();
         DfeClient.DEBUG = true;
-        DfeResponse<Documents.DetailsResponse> response = client.requestDetails(packageName);
-        DfeResponse<Unsorted.DeliveryResponse> deliveryResponse =
-                client.requestDeliver(response.getResponse().getDocV2().getDocid(),
-                        response.getResponse().getDocV2().getDetails().getAppDetails().getVersionCode());
-        Download.AndroidAppDeliveryData appDeliveryData;
-        if (deliveryResponse.getResponse() == null || deliveryResponse.getResponse().getStatus() == 3) {
-            DfeResponse<Purchase.PurchaseStatusResponse> buyResponse =
-                    client.requestPurchase(response.getResponse().getDocV2().getDocid(),
-                            response.getResponse().getDocV2().getDetails().getAppDetails().getVersionCode());
-            if (buyResponse.getResponse() != null && buyResponse.getResponse().getAppDeliveryData() != null) {
-                appDeliveryData = buyResponse.getResponse().getAppDeliveryData();
+        DfeResponse<DetailsResponse> response = client.details(packageName);
+        DfeResponse<DeliveryResponse> deliveryResponse =
+                client.deliver(response.getResponse().docV2.docid,
+                        response.getResponse().docV2.details.appDetails.versionCode);
+        AndroidAppDeliveryData appDeliveryData;
+        if (deliveryResponse.getResponse() == null || deliveryResponse.getResponse().status == 3) {
+            DfeResponse<BuyResponse> buyResponse =
+                    client.purchase(response.getResponse().docV2.docid,
+                            response.getResponse().docV2.details.appDetails.versionCode);
+            if (buyResponse.getResponse() != null && buyResponse.getResponse().purchaseStatusResponse != null &&
+                    buyResponse.getResponse().purchaseStatusResponse.appDeliveryData != null) {
+                appDeliveryData = buyResponse.getResponse().purchaseStatusResponse.appDeliveryData;
             } else {
-                deliveryResponse = client.requestDeliver(response.getResponse().getDocV2().getDocid(),
-                        response.getResponse().getDocV2().getDetails().getAppDetails().getVersionCode());
-                appDeliveryData = deliveryResponse.getResponse().getAppDeliveryData();
+                deliveryResponse = client.deliver(response.getResponse().docV2.docid,
+                        response.getResponse().docV2.details.appDetails.versionCode);
+                appDeliveryData = deliveryResponse.getResponse().appDeliveryData;
             }
         } else {
-            appDeliveryData = deliveryResponse.getResponse().getAppDeliveryData();
+            appDeliveryData = deliveryResponse.getResponse().appDeliveryData;
         }
         if (appDeliveryData == null) {
             throw new RuntimeException("No app data!");
         }
         return Market.GetAssetResponse.InstallAsset.newBuilder()
-                .setBlobUrl(appDeliveryData.getDownloadUrl())
-                .setDownloadAuthCookieName(appDeliveryData.getDownloadAuthCookie(0).getName())
-                .setDownloadAuthCookieValue(appDeliveryData.getDownloadAuthCookie(0).getValue())
-                .setVersionCode(response.getResponse().getDocV2().getDetails().getAppDetails().getVersionCode())
-                .setAssetSize(appDeliveryData.getDownloadSize()).build();
+                .setBlobUrl(appDeliveryData.downloadUrl)
+                .setDownloadAuthCookieName(appDeliveryData.downloadAuthCookie.get(0).name)
+                .setDownloadAuthCookieValue(appDeliveryData.downloadAuthCookie.get(0).value)
+                .setVersionCode(response.getResponse().docV2.details.appDetails.versionCode)
+                .setAssetSize(appDeliveryData.downloadSize).build();
 	}
 
 	@Override
