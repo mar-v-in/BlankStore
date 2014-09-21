@@ -167,7 +167,7 @@ public class SecureGooglePlayConnection extends BlankConnection {
                 client.deliver(response.getResponse().docV2.docid,
                         response.getResponse().docV2.details.appDetails.versionCode);
         AndroidAppDeliveryData appDeliveryData;
-        if (deliveryResponse.getResponse() == null || deliveryResponse.getResponse().status == 3) {
+        if (deliveryResponse.getResponse() == null || deliveryResponse.getResponse().appDeliveryData != null) {
             DfeResponse<BuyResponse> buyResponse =
                     client.purchase(response.getResponse().docV2.docid,
                             response.getResponse().docV2.details.appDetails.versionCode);
