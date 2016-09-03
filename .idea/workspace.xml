@@ -2,126 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ae4e2cf9-b18a-4ae2-b28c-41e97671de7a" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/com.android.vending/AndroidManifest.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/com.android.vending/build.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/com.android.vending/proguard-project.txt" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/com.android.vending/project.properties" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/com.android.vending/res/drawable-hdpi/btn_install.9.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/com.android.vending/res/drawable-hdpi/btn_install_disabled.9.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/com.android.vending/res/drawable-hdpi/btn_install_focused.9.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/com.android.vending/res/drawable-hdpi/btn_install_pressed.9.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/com.android.vending/res/drawable-hdpi/ic_download_stop.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/com.android.vending/res/drawable-hdpi/ic_launcher.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/com.android.vending/res/drawable-hdpi/ic_rate_star_half.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/com.android.vending/res/drawable-hdpi/ic_rate_star_off.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/com.android.vending/res/drawable-hdpi/ic_rate_star_on.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/com.android.vending/res/drawable-hdpi/stat_notify_marketplace_update.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/com.android.vending/res/drawable-hdpi/stat_sys_install_complete.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/com.android.vending/res/drawable-mdpi/btn_install.9.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/com.android.vending/res/drawable-mdpi/btn_install_disabled.9.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/com.android.vending/res/drawable-mdpi/btn_install_focused.9.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/com.android.vending/res/drawable-mdpi/btn_install_pressed.9.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/com.android.vending/res/drawable-mdpi/ic_download_stop.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/com.android.vending/res/drawable-mdpi/ic_launcher.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/com.android.vending/res/drawable-mdpi/ic_rate_star_half.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/com.android.vending/res/drawable-mdpi/ic_rate_star_off.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/com.android.vending/res/drawable-mdpi/ic_rate_star_on.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/com.android.vending/res/drawable-mdpi/stat_notify_marketplace_update.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/com.android.vending/res/drawable-mdpi/stat_sys_install_complete.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/com.android.vending/res/drawable-xhdpi/ic_launcher.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/com.android.vending/res/drawable/btn_install_background.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/com.android.vending/res/drawable/play_logo_black.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/com.android.vending/res/layout/account.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/com.android.vending/res/layout/appdetail.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/com.android.vending/res/layout/appentry.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/com.android.vending/res/layout/applist.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/com.android.vending/res/layout/main.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/com.android.vending/res/layout/start.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/com.android.vending/res/menu/main.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/com.android.vending/res/values/colors.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/com.android.vending/res/values/signature.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/com.android.vending/res/values/strings.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/com.android.vending/res/xml/account_preferences.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/com.android.vending/res/xml/authenticator.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/com.android.vending/src/android/content/pm/IPackageDataObserver.aidl" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/com.android.vending/src/android/content/pm/IPackageDeleteObserver.aidl" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/com.android.vending/src/android/content/pm/IPackageInstallObserver.aidl" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/com.android.vending/src/android/content/pm/IPackageMoveObserver.aidl" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/com.android.vending/src/com/android/vending/BlankActivity.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/com.android.vending/src/com/android/vending/BlankAsyncTask.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/com.android.vending/src/com/android/vending/BlankConnection.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/com.android.vending/src/com/android/vending/BlankListener.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/com.android.vending/src/com/android/vending/BlankPackageInstaller.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/com.android.vending/src/com/android/vending/BlankStore.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/com.android.vending/src/com/android/vending/Cache.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/com.android.vending/src/com/android/vending/Reference.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/com.android.vending/src/com/android/vending/Utils.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/com.android.vending/src/com/android/vending/account/Account.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/com.android.vending/src/com/android/vending/account/AccountActivity.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/com.android.vending/src/com/android/vending/account/AccountAuthenticatorService.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/com.android.vending/src/com/android/vending/account/AccountManager.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/com.android.vending/src/com/android/vending/adapter/AppsAdapter.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/com.android.vending/src/com/android/vending/fragments/AppFragment.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/com.android.vending/src/com/android/vending/fragments/AppListFragment.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/com.android.vending/src/com/android/vending/fragments/BlankFragment.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/com.android.vending/src/com/android/vending/fragments/InstalledAppsFragment.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/com.android.vending/src/com/android/vending/fragments/ScreenshotFragment.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/com.android.vending/src/com/android/vending/fragments/StartFragment.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/com.android.vending/src/com/android/vending/google/DefaultGooglePlayConnection.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/com.android.vending/src/com/android/vending/google/GooglePlayConnection.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/com.android.vending/src/com/android/vending/google/SecureGooglePlayConnection.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/com.android.vending/src/com/android/vending/licensing/ILicenseResultListener.aidl" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/com.android.vending/src/com/android/vending/licensing/ILicensingService.aidl" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/com.android.vending/src/com/android/vending/licensing/LicensingService.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/com.android.vending/src/com/android/vending/tasks/AppDownloadTask.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/com.android.vending/src/com/android/vending/tasks/AppListTask.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/com.android.vending/src/com/android/vending/tasks/AppTask.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/com.android.vending/src/com/android/vending/tasks/AppsTask.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/com.android.vending/src/com/android/vending/tasks/ImageTask.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/com.android.vending/src/com/android/vending/tasks/ImageToViewTask.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/com.android.vending/src/com/gc/android/market/api/Base64.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/com.android.vending/src/com/gc/android/market/api/LoginException.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/com.android.vending/src/com/gc/android/market/api/MarketSession.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/com.android.vending/src/com/gc/android/market/api/Tools.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/com.android.vending/src/com/gc/android/market/api/model/Market.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/com.android.vending/src/com/google/protobuf/AbstractMessage.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/com.android.vending/src/com/google/protobuf/AbstractMessageLite.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/com.android.vending/src/com/google/protobuf/BlockingRpcChannel.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/com.android.vending/src/com/google/protobuf/BlockingService.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/com.android.vending/src/com/google/protobuf/ByteString.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/com.android.vending/src/com/google/protobuf/CodedInputStream.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/com.android.vending/src/com/google/protobuf/CodedOutputStream.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/com.android.vending/src/com/google/protobuf/DescriptorProtos.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/com.android.vending/src/com/google/protobuf/Descriptors.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/com.android.vending/src/com/google/protobuf/DynamicMessage.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/com.android.vending/src/com/google/protobuf/ExtensionRegistry.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/com.android.vending/src/com/google/protobuf/ExtensionRegistryLite.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/com.android.vending/src/com/google/protobuf/FieldSet.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/com.android.vending/src/com/google/protobuf/GeneratedMessage.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/com.android.vending/src/com/google/protobuf/GeneratedMessageLite.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/com.android.vending/src/com/google/protobuf/Internal.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/com.android.vending/src/com/google/protobuf/InvalidProtocolBufferException.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/com.android.vending/src/com/google/protobuf/LazyStringArrayList.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/com.android.vending/src/com/google/protobuf/LazyStringList.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/com.android.vending/src/com/google/protobuf/Message.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/com.android.vending/src/com/google/protobuf/MessageLite.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/com.android.vending/src/com/google/protobuf/MessageLiteOrBuilder.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/com.android.vending/src/com/google/protobuf/MessageOrBuilder.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/com.android.vending/src/com/google/protobuf/ProtocolMessageEnum.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/com.android.vending/src/com/google/protobuf/RepeatedFieldBuilder.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/com.android.vending/src/com/google/protobuf/RpcCallback.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/com.android.vending/src/com/google/protobuf/RpcChannel.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/com.android.vending/src/com/google/protobuf/RpcController.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/com.android.vending/src/com/google/protobuf/RpcUtil.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/com.android.vending/src/com/google/protobuf/Service.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/com.android.vending/src/com/google/protobuf/ServiceException.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/com.android.vending/src/com/google/protobuf/SingleFieldBuilder.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/com.android.vending/src/com/google/protobuf/SmallSortedMap.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/com.android.vending/src/com/google/protobuf/TextFormat.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/com.android.vending/src/com/google/protobuf/UninitializedMessageException.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/com.android.vending/src/com/google/protobuf/UnknownFieldSet.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/com.android.vending/src/com/google/protobuf/UnmodifiableLazyStringList.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/com.android.vending/src/com/google/protobuf/WireFormat.java" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" afterPath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/values/colors.xml" afterPath="$PROJECT_DIR$/app/src/main/res/values/colors.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" afterPath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" />
     </list>
     <ignored path="vending.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -1801,6 +1684,101 @@
     <ConfirmationsSetting value="0" id="Add" />
     <ConfirmationsSetting value="0" id="Remove" />
   </component>
+  <component name="ProjectView">
+    <navigator currentView="AndroidView" proportions="" version="1">
+      <flattenPackages />
+      <showMembers />
+      <showModules />
+      <showLibraryContents />
+      <hideEmptyPackages />
+      <abbreviatePackageNames />
+      <autoscrollToSource />
+      <autoscrollFromSource />
+      <sortByType />
+      <manualOrder />
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="PackagesPane" />
+      <pane id="Scope" />
+      <pane id="AndroidView">
+        <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="vending" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="vending" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="vending" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidSourceTypeNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="vending" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidSourceTypeNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="com" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="vending" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidSourceTypeNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="com" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="vending" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
+      <pane id="Scratches" />
+      <pane id="ProjectPane" />
+    </panes>
+  </component>
   <component name="PropertiesComponent">
     <property name="android.sdk.path" value="$USER_HOME$/bin/Android/Sdk" />
     <property name="settings.editor.selected.configurable" value="android.sdk-updates" />
@@ -1994,7 +1972,7 @@
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
