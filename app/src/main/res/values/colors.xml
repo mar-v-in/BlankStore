@@ -2,5 +2,7 @@
 <resources>
     <color name="header_bg">#3D3D3D</color>
     <color name="holo_blue_dark">#0099CC</color>
-    
+    <color name="colorPrimary">#3D3D3D</color>
+    <color name="colorPrimaryDark">#3D3D3D</color>
+    <color name="colorAccent">#3D3D3D</color>
 </resources>
