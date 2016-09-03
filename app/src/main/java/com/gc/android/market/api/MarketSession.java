@@ -448,5 +448,9 @@ public class MarketSession {
       } catch(Exception ex) {
             throw new RuntimeException(ex);
         }
-    }       	
+    }
+
+	public void setDeviceAndSdkVersion(String deviceName, int sdkVersion) {
+		context.setDeviceAndSdkVersion(deviceName + ":" + Integer.toString(sdkVersion));
+	}
 }
