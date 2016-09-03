@@ -8,8 +8,8 @@ android {
         applicationId "com.android.vending"
         minSdkVersion 15
         targetSdkVersion 24
-        versionCode 1
-        versionName "1.0"
+        versionCode 706
+        versionName "0.7.6"
     }
     buildTypes {
         release {
