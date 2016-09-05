@@ -65,7 +65,7 @@ public class MarketSession {
 
 	public String SERVICE = "android";
 
-	private static final String URL_LOGIN = "https://www.google.com/accounts/ClientLogin";
+	private static final String URL_LOGIN = "https://android.clients.google.com/auth";
 	public static final String ACCOUNT_TYPE_GOOGLE = "GOOGLE";
 	public static final String ACCOUNT_TYPE_HOSTED = "HOSTED";
 	public static final String ACCOUNT_TYPE_HOSTED_OR_GOOGLE = "HOSTED_OR_GOOGLE";
