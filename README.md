@@ -1,10 +1,11 @@
 BlankStore [legacy]
 ===================
 
-An open source Google Play Store client. Part of μg Project.
+An open source Google Play Store client.
 Development on BlankStore was stopped. Latest commits are just maintenance fixes, don't expect too much :)
+You might want to try out [Yalp Store](https://github.com/yeriomin/YalpStore) instead.
 
-###Build instructions
+### Build instructions
 
 Prerequisites:
 
@@ -21,12 +22,12 @@ Procedure:
     android update project -p .
     ant debug
 
-###Credits
+### Credits
 
 Thanks to @cernekee for adding some nice features and @mid-kid for fixing stuff.
 
-###License
-> Copyright 2012-2014 μg Project Team
+### License
+> Copyright 2012-2014 microG Project Team
 
 > Licensed under the Apache License, Version 2.0 (the "License");
 > you may not use this file except in compliance with the License.
@@ -45,7 +46,7 @@ Java Protocol Buffers runtime library
 This Project uses the [Google's Java Protocol Buffers runtime library](http://code.google.com/p/protobuf/). The related files are found 
 in com.android.vending/src/com/google/protobuf.
 
-###License
+### License
 > Copyright 2008, Google Inc.
 > All rights reserved.
 
@@ -87,5 +88,5 @@ android-market-api
 This Project uses the [android-market-api](https://code.google.com/p/android-market-api/). The related files are found 
 in com.android.vending/src/com/gc/android/market/api.
 
-###License
+### License
 android-market-api is licensed under the [Apache License 2.0](http://www.apache.org/licenses/LICENSE-2.0).
