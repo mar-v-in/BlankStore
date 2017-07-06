@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.android.vending"
+    android:versionCode="0705"
+    android:versionName="0.7.5" >
+
+    <uses-sdk android:minSdkVersion="9" android:targetSdkVersion="23" />
+
+    <permission
+        android:name="com.android.vending.CHECK_LICENSE"
+        android:description="@string/perm_check_license_desc"
+        android:label="@string/perm_check_license_label"
+        android:permissionGroup="android.permission-group.NETWORK" />
+    <permission
+        android:name="com.android.vending.BILLING"
+        android:description="@string/perm_billing_desc"
+        android:label="@string/perm_billing_label"
+        android:permissionGroup="android.permission-group.NETWORK" />
+    <permission android:name="com.android.vending.billing.IN_APP_NOTIFY.permission.C2D_MESSAGE" />
+    <permission android:name="com.android.vending.billing.BILLING_ACCOUNT_SERVICE" />
+    <permission android:name="com.android.vending.billing.ADD_CREDIT_CARD" />
+    <permission android:name="com.android.vending.MANAGE_ACCOUNTS" />
+
+    <uses-permission android:name="com.android.vending.billing.IN_APP_NOTIFY.permission.C2D_MESSAGE" />
+    <uses-permission android:name="com.android.vending.BILLING" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.DELETE_PACKAGES" />
+    <uses-permission android:name="android.permission.GET_PACKAGE_SIZE" />
+    <uses-permission android:name="android.permission.INSTALL_PACKAGES" />
+    <uses-permission android:name="android.permission.RESTART_PACKAGES" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.GET_TASKS" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.MANAGE_ACCOUNTS" />
+    <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS" />
+    <uses-permission android:name="android.permission.USE_CREDENTIALS" />
+    <uses-permission android:name="android.permission.RAED_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CLEAR_APP_CACHE" />
+    <uses-permission android:name="android.permission.CHANGE_COMPONENT_ENABLED_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_DOWNLOAD_MANAGER" />
+    <uses-permission android:name="android.permission.ACCESS_DOWNLOAD_MANAGER_ADVANCED" />
+    <uses-permission android:name="android.permission.INSTALL_PACKAGES" />
+    <uses-permission android:name="android.permission.DELETE_PACKAGES" />
+    <uses-permission android:name="android.permission.NFC" />
+    <uses-permission android:name="android.permission.STATUS_BAR" />
+    <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT" />
+    <uses-permission android:name="com.android.vending.MANAGE_ACCOUNTS"/>
+    <uses-permission android:name="android.permission.FAKE_PACKAGE_SIGNATURE" />
+
+    <application
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name" >
+        <service
+            android:name=".account.AccountAuthenticatorService"
+            android:exported="true"
+            android:permission="com.android.vending.MANAGE_ACCOUNTS"
+            android:process=":auth" >
+            <intent-filter>
+                <action android:name="android.accounts.AccountAuthenticator" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.accounts.AccountAuthenticator"
+                android:resource="@xml/authenticator" />
+        </service>
+
+        <service android:name="com.android.vending.licensing.LicensingService"
+                 android:permission="com.android.vending.CHECK_LICENSE">
+            <intent-filter>
+                <action android:name="com.android.vending.licensing.ILicensingService" />
+            </intent-filter>
+        </service>
+
+        <activity
+            android:name=".BlankActivity"
+            android:label="@string/launcher_name"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
+            android:theme="@android:style/Theme.Holo.Light.DarkActionBar" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.nfc.action.NDEF_DISCOVERED" />
+
+                <category android:name="android.intent.category.BROWSABLE" />
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <action android:name="android.intent.action.VIEW" />
+
+                <data
+                    android:host="search"
+                    android:path=""
+                    android:scheme="market" />
+                <data
+                    android:host="market.android.com"
+                    android:path=""
+                    android:scheme="http" />
+                <data
+                    android:host="market.android.com"
+                    android:pathPrefix="/"
+                    android:scheme="http" />
+                <data
+                    android:host="market.android.com"
+                    android:path=""
+                    android:scheme="https" />
+                <data
+                    android:host="market.android.com"
+                    android:pathPrefix="/"
+                    android:scheme="https" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.nfc.action.NDEF_DISCOVERED" />
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="play.google.com"
+                    android:pathPrefix="/store"
+                    android:scheme="http" />
+                <data
+                    android:host="play.google.com"
+                    android:pathPrefix="/store"
+                    android:scheme="https" />
+            </intent-filter>
+
+            <meta-data
+                android:name="com.android.launcher.toolbar_icon"
+                android:resource="@drawable/ic_launcher" />
+        </activity>
+        <activity
+            android:name="com.android.vending.account.AccountActivity"
+            android:label="@string/app_name"
+            android:logo="@drawable/play_logo_black"
+            android:theme="@android:style/Theme.Holo" >
+        </activity>
+
+	<meta-data android:name="fake-signature" android:value="@string/fake_signature" />
+    </application>
+
+</manifest>

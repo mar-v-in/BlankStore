@@ -1,0 +1,22 @@
+
+bad:
+17:26:33.764 14078-14391/com.android.vending D/----------------: class com.google.play.proto.ResponseWrapper$Builder
+09-06 17:26:33.835 14078-14391/com.android.vending D/----------------: class com.google.play.proto.Payload$Builder
+09-06 17:26:33.853 14078-14391/com.android.vending D/----------------: class com.google.play.proto.DetailsResponse$Builder
+09-06 17:26:33.856 14078-14391/com.android.vending D/----------------: class com.google.play.proto.DocV2$Builder
+09-06 17:26:33.878 14078-14391/com.android.vending D/----------------: class com.google.play.proto.DocumentDetails$Builder
+09-06 17:26:33.891 14078-14391/com.android.vending D/----------------: class com.google.play.proto.AppDetails$Builder
+09-06 17:26:33.899 14078-14391/com.android.vending D/----------------: class com.squareup.wire.Message$Builder
+
+good:
+class com.google.play.proto.ResponseWrapper$Builder
+class com.google.play.proto.Payload$Builder
+class com.google.play.proto.DetailsResponse$Builder
+class com.google.play.proto.DocV2$Builder
+class com.google.play.proto.DocumentDetails$Builder
+class com.google.play.proto.AppDetails$Builder
+class com.google.play.proto.FileMetadata$Builder
+class com.google.play.proto.PreFetch$Builder
+class com.google.play.proto.PreFetch$Builder
+class com.google.play.proto.PreFetch$Builder
+

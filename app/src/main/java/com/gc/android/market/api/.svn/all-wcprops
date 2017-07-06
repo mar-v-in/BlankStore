@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/!svn/ver/55/trunk/AndroidMarketApi/src/com/gc/android/market/api
+END
+Tools.java
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svn/!svn/ver/37/trunk/AndroidMarketApi/src/com/gc/android/market/api/Tools.java
+END
+Base64.java
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svn/!svn/ver/3/trunk/AndroidMarketApi/src/com/gc/android/market/api/Base64.java
+END
+Main.java
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/!svn/ver/55/trunk/AndroidMarketApi/src/com/gc/android/market/api/Main.java
+END
+LoginException.java
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/!svn/ver/37/trunk/AndroidMarketApi/src/com/gc/android/market/api/LoginException.java
+END
+MarketSession.java
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/!svn/ver/55/trunk/AndroidMarketApi/src/com/gc/android/market/api/MarketSession.java
+END
